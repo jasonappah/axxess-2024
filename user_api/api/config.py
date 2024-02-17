@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     ENV: Literal["development", "staging", "production"] = "development"
     VERSION: str = "0.1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
-    DATABASE_URI: str = "sqlite:////Users/anth/dev/fastapi-sqlmodel/database.db"
+    DATABASE_URI: str = "sqlite:///data/database.db"
     API_USERNAME: str = "svc_test"
     API_PASSWORD: str = "superstrongpassword"
 
