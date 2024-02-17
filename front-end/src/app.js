@@ -6,6 +6,7 @@ import { green, purple } from "@mui/material/colors";
 
 import CssBaseline from '@mui/material/CssBaseline';
 import "./app.css"
+import { Button } from "@mui/material";
 
 const theme = createTheme({
 	palette: {
@@ -25,6 +26,9 @@ function App() {
 			<CssBaseline />
 			<div className="page">
 			<h1>Hello!</h1>
+			<Button variant="contained" color="primary">
+				Hello World
+			</Button>
 			</div>
 		</ThemeProvider>
 	);
