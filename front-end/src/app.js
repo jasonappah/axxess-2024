@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { green, purple } from "@mui/material/colors";
 
-import CssBaseline from '@mui/material/CssBaseline';
-import "./app.css"
+import CssBaseline from "@mui/material/CssBaseline";
+import "./app.css";
 import { Button } from "@mui/material";
+import Patients from "./Patients";
+import CreatePatient from "./CreatePatient";
+import ViewPatient from "./ViewPatient";
 
 const theme = createTheme({
 	palette: {
-		mode: "dark",
+		mode: "light",
 		primary: {
 			main: purple[500],
 		},
@@ -21,14 +24,32 @@ const theme = createTheme({
 });
 
 function App() {
+
+	const [page, setPage] = useState(0);
+	const [content, setContent] = useState(<Patients/>);
+
+	useEffect(() => {
+		switch (page) {
+			case 0:
+				setContent(<Patients />);
+				break;
+			case 1:
+				setContent(<CreatePatient />);
+				break;
+			case 2:
+				setContent(<ViewPatient />);
+				break;
+			default:
+				setContent(<Patients />);
+				break;
+		}
+	}, [page]);
+
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<div className="page">
-			<h1>Hello!</h1>
-			<Button variant="contained" color="primary">
-				Hello World
-			</Button>
+				{content}
 			</div>
 		</ThemeProvider>
 	);
