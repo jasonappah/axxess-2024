@@ -4,4 +4,22 @@
     position: absolute;
     top: 0;
     left: 0;
+
+    display: flex;
+    flex-direction: row;
+
+}
+
+.menu {
+    width: 25%;
+    height: 100%;
+    border-right: 1px solid black;
+}
+
+.content {
+    width: 75%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

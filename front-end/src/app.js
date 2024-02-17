@@ -24,9 +24,9 @@ const theme = createTheme({
 });
 
 function App() {
-
 	const [page, setPage] = useState(0);
-	const [content, setContent] = useState(<Patients/>);
+	const [content, setContent] = useState(<Patients />);
+	const [selectedPatient, setSelectedPatient] = useState(<Patients />);
 
 	useEffect(() => {
 		switch (page) {
@@ -49,7 +49,8 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<div className="page">
-				{content}
+				<div className="menu"></div>
+				<div className="content">{content}</div>
 			</div>
 		</ThemeProvider>
 	);
