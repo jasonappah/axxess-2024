@@ -31,16 +31,31 @@ function App() {
 	useEffect(() => {
 		switch (page) {
 			case 0:
-				setContent(<Patients />);
+				setContent(
+					<Patients setPage={setPage} setSelectedPatient={setSelectedPatient} />
+				);
 				break;
 			case 1:
-				setContent(<CreatePatient />);
+				setContent(
+					<CreatePatient
+						setPage={setPage}
+						setSelectedPatient={setSelectedPatient}
+					/>
+				);
 				break;
 			case 2:
-				setContent(<ViewPatient />);
+				setContent(
+					<ViewPatient
+						selectedPatient={selectedPatient}
+						setPage={setPage}
+						setSelectedPatient={setSelectedPatient}
+					/>
+				);
 				break;
 			default:
-				setContent(<Patients />);
+				setContent(
+					<Patients setPage={setPage} setSelectedPatient={setSelectedPatient} />
+				);
 				break;
 		}
 	}, [page]);
@@ -49,7 +64,30 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<div className="page">
-				<div className="menu"></div>
+				<div className="menu">
+					<Button
+						fullWidth
+						sx={{ padding: 2 }}
+						variant="outlined"
+						color="primary"
+						onClick={(e) => {
+							setPage(0);
+						}}
+					>
+						Patients
+					</Button>
+					<Button
+						sx={{ padding: 2 }}
+						fullWidth
+						variant="outlined"
+						color="primary"
+						onClick={(e) => {
+							setPage(1);
+						}}
+					>
+						Create Patient
+					</Button>
+				</div>
 				<div className="content">{content}</div>
 			</div>
 		</ThemeProvider>

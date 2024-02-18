@@ -1,0 +1,7 @@
+.view-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    margin-top: 20px;
+}
