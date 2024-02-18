@@ -17,21 +17,18 @@ export default function CreatePatient() {
 					required
 					id="filled-required"
 					label="Name"
-					defaultValue="Hello World"
 					variant="filled"
 				/>
 				<TextField
-					disabled
-					id="filled-disabled"
+					required
+					id="filled-required"
 					label="ID"
-					defaultValue="Hello World"
 					variant="filled"
 				/>
 				<TextField
-					id="filled-password-input"
+                    required
+					id="filled-required"
 					label="Medicine"
-					type="password"
-					autoComplete="current-password"
 					variant="filled"
 				/>
 
