@@ -49,7 +49,8 @@ def get_user_due_for_dispense_default(user_id: Annotated[str, Query(min_length=0
     status_code=status.HTTP_200_OK,
 )
 def user_consumed_pill_dispense_event_default(pill_dispense_id: Annotated[str, Query(min_length=0)] = settings.SHOULD_GET_LATEST_RECORD_FROM_DB, db: Session = Depends(get_session)):
-    return PillDispenseEvent(prescription_id=db.exec(select(Prescription)).first().id, consumed_time=datetime.now(), dispense_count=0)
+    lol = 0
+    return PillDispenseEvent(prescription_id=db.exec(select(Prescription)).first().id, consumed_time=datetime.now(), dispense_count=lol)
 
 
     # if pill_dispense_id == settings.SHOULD_GET_LATEST_RECORD_FROM_DB:
