@@ -23,12 +23,22 @@ lol = 2
 #     user_id = get_newest_user_id(db) if user_id == settings.SHOULD_GET_LATEST_RECORD_FROM_DB else user_id
 #     return read_user_if_user_is_due_for_dispense(user_id=user_id, db=db)
 
+@router.post(
+    "/set_num",
+    status_code=status.HTTP_200_OK,
+)
+def set_num(num: int):
+    global lol
+    lol = num
+    return num
+
 @router.get(
     "/due_for_dispense",
     # response_model=list[UserReadWithPrescriptions],
     status_code=status.HTTP_200_OK,
 )
 def get_user_due_for_dispense_default(user_id: Annotated[str, Query(min_length=0)] = settings.SHOULD_GET_LATEST_RECORD_FROM_DB, db: Session = Depends(get_session)):
+    global lol
     return lol
     # if user_id == settings.SHOULD_GET_LATEST_RECORD_FROM_DB:
     #     user_id = get_newest_user_id(db)
@@ -49,6 +59,7 @@ def get_user_due_for_dispense_default(user_id: Annotated[str, Query(min_length=0
     status_code=status.HTTP_200_OK,
 )
 def user_consumed_pill_dispense_event_default(pill_dispense_id: Annotated[str, Query(min_length=0)] = settings.SHOULD_GET_LATEST_RECORD_FROM_DB, db: Session = Depends(get_session)):
+    global lol
     lol = 0
     return PillDispenseEvent(prescription_id=db.exec(select(Prescription)).first().id, consumed_time=datetime.now(), dispense_count=lol)
 
