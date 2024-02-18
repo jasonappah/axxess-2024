@@ -8,6 +8,8 @@ from api.public.chat.models import (
     ChatSession,
 )
 from api.utils.logger import logger_config
+from api.public.user.crud import get_newest_user_id
+from api.config import settings
 
 router = APIRouter()
 logger = logger_config(__name__)
@@ -36,5 +38,11 @@ def get_sessions(db: Session = Depends(get_session)):
     response_model=ChatMessageResponse,
     status_code=status.HTTP_201_CREATED,
 )
-def create_message(m: ChatMessageBase, user_id: str, db: Session = Depends(get_session)):
+def create_message(
+    m: ChatMessageBase,
+    user_id: str = settings.SHOULD_GET_LATEST_RECORD_FROM_DB,
+    db: Session = Depends(get_session),
+):
+    if user_id == settings.SHOULD_GET_LATEST_RECORD_FROM_DB:
+        user_id = get_newest_user_id(db)
     return message(m, user_id, db)

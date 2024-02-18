@@ -18,6 +18,8 @@ class Settings(BaseSettings):
 
     CREATE_NEW_CHAT_SESSION_IF_LAST_MSG_OLDER_THAN: timedelta = timedelta(minutes=5)
 
+    SHOULD_GET_LATEST_RECORD_FROM_DB: str = "__GET_LATEST__"
+
     # set base url to none to use the default openai api url, or set it to a custom url in .env file to use Ollama or other OpenAI-compatible API
     OPENAI_API_KEY: str = "__OLLAMA__"
     OPENAI_BASE_URL: str | None = None

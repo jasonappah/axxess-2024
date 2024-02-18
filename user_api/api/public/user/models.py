@@ -9,6 +9,7 @@ class UserRole(str, Enum):
     PATIENT = "PATIENT"
     CARETAKER = "CARETAKER"
 
+
 class FrequencyUnit(str, Enum):
     HOUR = "HOUR"
     DAY = "DAY"
@@ -31,13 +32,17 @@ class Prescription(SQLModel, table=True):
     frequency_number: int
     frequency_unit_number: int
     frequency_unit: FrequencyUnit
-    pill_dispenses: list["PillDispense"] = Relationship(back_populates="prescription")
+    # TODO: need to have dispenses serializable on a prescription
+    pill_dispenses: list["PillDispenseEvent"] = Relationship(
+        back_populates="prescription"
+    )
 
 
 class UserBase(SQLModel):
     role: UserRole
     name: str
-    
+
+
 class UserCreate(UserBase):
     class Config:
         json_schema_extra = {
@@ -54,6 +59,7 @@ class UserCreate(UserBase):
                 ],
             }
         }
+
     prescriptions: list[dict] = []
 
 
@@ -68,13 +74,16 @@ class UserReadWithPrescriptions(UserBase):
     prescriptions: list[Prescription] = []
     id: str
 
-class PillDispense(SQLModel, table=True):
+
+class PillDispenseEvent(SQLModel, table=True):
+    # TODO: probably need to have these cascade on delete from prescription deletions
     id: str | None = Field(default_factory=id_factory, primary_key=True)
     prescription_id: str = Field(foreign_key="prescription.id")
     prescription: "Prescription" = Relationship(back_populates="pill_dispenses")
     dispense_time: datetime | None = Field(default_factory=now_factory)
     dispense_count: int = 0
     consumed_time: datetime | None = None
+
 
 """
 need to automatically create a pill dispense at the correct time for each prescription
@@ -86,7 +95,5 @@ in real world:
 - pills 'dispensing' means that the button on the dispenser to get the pills out is now active and will dispense the pills when pressed
 - pills 'consumed' means that you actually took the pills, or at least pressed the button to get the pills out
 
-need an endpoint to check for each user if they have any pills to dispense
 need an endpoint to mark a pill dispense as consumed
-endpoint to check if prescription is due for dispense is also nice but not 100% needed
 """
