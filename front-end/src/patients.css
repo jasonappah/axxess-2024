@@ -1,0 +1,11 @@
+.patients-table {
+    width: 100%;
+    height: 100%;
+}
+
+.icon {
+    cursor: pointer;
+    padding: 0.5rem;
+    color: #ce0eef;
+    transform: translateY(0.1rem);
+}
