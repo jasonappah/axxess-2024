@@ -18,6 +18,11 @@ class Settings(BaseSettings):
 
     CREATE_NEW_CHAT_SESSION_IF_LAST_MSG_OLDER_THAN: timedelta = timedelta(minutes=5)
 
+    # set base url to none to use the default openai api url, or set it to a custom url in .env file to use Ollama or other OpenAI-compatible API
+    OPENAI_API_KEY: str = "__OLLAMA__"
+    OPENAI_BASE_URL: str | None = 'http://localhost:11434/v1' if OPENAI_API_KEY == "__OLLAMA__" else None
+    OPENAI_MODEL: str = "mistral"
+
     class Config:
         case_sensitive = True
 

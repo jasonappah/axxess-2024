@@ -5,6 +5,9 @@ from datetime import datetime
 from api.config import settings
 from api.public.chat.models import ChatMessageBase, ChatSessionRead, ChatSession
 from api.utils.logger import logger_config
+from openai import OpenAI
+
+openai = OpenAI(base_url=settings.OPENAI_BASE_URL, api_key=settings.OPENAI_API_KEY)
 
 logger = logger_config(__name__)
 
@@ -51,3 +54,4 @@ def insert_message(msg: ChatMessageBase, db: Session = Depends(get_session)):
     db.refresh(chat_session)
     db.refresh(msg)
     return msg
+

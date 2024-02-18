@@ -8,6 +8,7 @@ fastapi = "*"
 sqlmodel = "*"
 uvicorn = "*"
 pydantic-settings = "*"
+openai = "*"
 
 [dev-packages]
 black = "*"

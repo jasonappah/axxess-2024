@@ -26,4 +26,3 @@ def get_session_by_id(session_id: str, db: Session = Depends(get_session)):
 )
 def get_sessions(db: Session = Depends(get_session)):
     return db.exec(select(ChatSession)).all()
-
