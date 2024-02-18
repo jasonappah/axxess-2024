@@ -16,5 +16,5 @@ class Health(BaseModel):
 
 
 class Stats(BaseModel):
-    heroes: int | None
-    teams: int | None
+    users: int | None
+    prescriptions: int | None

@@ -1,64 +1,81 @@
 from sqlmodel import Session
 
 from api.database import engine
-from api.public.hero.models import Hero
-from api.public.team.models import Team
+from api.public.user.models import User, Prescription, UserRole, FrequencyUnit
 from api.utils.logger import logger_config
 
 logger = logger_config(__name__)
 
 
-def create_heroes_and_teams():
+def create_demo_data():
     with Session(engine) as session:
-        team_preventers = Team(name="Preventers", headquarters="Sharp Tower")
-        team_z_force = Team(name="Z-Force", headquarters="Sister Margaret's Bar")
-        wornderful_league = Team(
-            name="Wonderful-League", headquarters="Fortress of Solitude"
+        caretaker = User(
+            name="Caretaker Amy",
+            role=UserRole.CARETAKER,
         )
 
-        hero_deadpond = Hero(
-            name="Deadpond",
-            secret_name="Dive Wilson",
-            age=24,
-            teams=[team_z_force, team_preventers],
-        )
-        hero_rusty_man = Hero(
-            name="Rusty-Man",
-            secret_name="Tommy Sharp",
-            age=48,
-            teams=[team_preventers],
-        )
-        hero_spider_boy = Hero(
-            name="Spider-Boy",
-            secret_name="Pedro Parqueador",
-            age=37,
-            teams=[team_preventers],
-        )
-        hero_super_good_boy = Hero(
-            name="Super-Good-Boy",
-            secret_name="John Goodman",
-            age=30,
-            teams=[wornderful_league, team_z_force],
+        patient1 = User(
+            name="Bob Whitaker",
+            role=UserRole.PATIENT,
         )
 
-        session.add(hero_deadpond)
-        session.add(hero_rusty_man)
-        session.add(hero_spider_boy)
-        session.add(hero_super_good_boy)
+        patient2 = User(
+            name="John Doe",
+            role=UserRole.PATIENT,
+        )
+        session.add(caretaker)
+        session.add(patient1)
+        session.add(patient2)
         session.commit()
+        session.refresh(caretaker)
+        session.refresh(patient1)
+        session.refresh(patient2)
 
-        session.refresh(hero_deadpond)
-        session.refresh(hero_rusty_man)
-        session.refresh(hero_spider_boy)
-        session.refresh(hero_super_good_boy)
+        # mainly for type checking
+        assert patient1.id is not None
+        assert patient2.id is not None
+        
+        prescription1 = Prescription(
+            medication_name="Aspirin 100mg",
+            user_id=patient1.id,
+            frequency_number=1,
+            frequency_unit_number=1,
+            frequency_unit=FrequencyUnit.DAY,
+        )
+
+        prescription2 = Prescription(
+            medication_name="Tylenol 500mg",
+            user_id=patient1.id,
+            frequency_number=1,
+            frequency_unit_number=6,
+            frequency_unit=FrequencyUnit.HOUR,
+        )
+
+        prescription3 = Prescription(
+            medication_name="Aspirin 100mg",
+            user_id=patient2.id,
+            frequency_number=1,
+            frequency_unit_number=1,
+            frequency_unit=FrequencyUnit.DAY,
+        )
+
+        prescription4 = Prescription(
+            medication_name="Tylenol 500mg",
+            user_id=patient2.id,
+            frequency_number=1,
+            frequency_unit_number=6,
+            frequency_unit=FrequencyUnit.HOUR,
+        )
+
+        session.add(prescription1)
+        session.add(prescription2)
+        session.add(prescription3)
+        session.add(prescription4)
+        session.commit()
+        session.refresh(prescription1)
+        session.refresh(prescription2)
+        session.refresh(prescription3)
+        session.refresh(prescription4)
+
 
         logger.info("=========== MOCK DATA CREATED ===========")
-        logger.info("Deadpond %s", hero_deadpond)
-        logger.info("Deadpond teams %s", hero_deadpond.teams)
-        logger.info("Rusty-Man %s", hero_rusty_man)
-        logger.info("Rusty-Man Teams %s", hero_rusty_man.teams)
-        logger.info("Spider-Boy %s", hero_spider_boy)
-        logger.info("Spider-Boy Teams %s", hero_spider_boy.teams)
-        logger.info("Super-Good-Boy %s", hero_super_good_boy)
-        logger.info("Super-Good-Boy Teams: %s", hero_super_good_boy.teams)
-        logger.info("===========================================")
