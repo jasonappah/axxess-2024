@@ -2,6 +2,7 @@ from datetime import datetime
 from enum import Enum
 from sqlmodel import Field, Relationship, SQLModel
 from api.utils.factories import id_factory, now_factory
+from api.public.chat.models import ChatSession
 
 
 class UserRole(str, Enum):
@@ -54,14 +55,12 @@ class UserCreate(UserBase):
         }
     prescriptions: list[dict] = []
 
+
 class User(UserBase, table=True):
     prescriptions: list[Prescription] = Relationship(back_populates="user")
     id: str | None = Field(default_factory=id_factory, primary_key=True)
     created_at: datetime | None = Field(default_factory=now_factory)
-
-    # TODO: is there a nice way to fix this type issue?
-    chat_sessions: list["ChatSession"] = Relationship(back_populates="user")
-    chat_messages: list["ChatMessage"] = Relationship(back_populates="user")
+    chat_sessions: list[ChatSession] = Relationship(back_populates="user")
 
 
 class UserReadWithPrescriptions(UserBase):

@@ -20,8 +20,9 @@ class Settings(BaseSettings):
 
     # set base url to none to use the default openai api url, or set it to a custom url in .env file to use Ollama or other OpenAI-compatible API
     OPENAI_API_KEY: str = "__OLLAMA__"
-    OPENAI_BASE_URL: str | None = 'http://localhost:11434/v1' if OPENAI_API_KEY == "__OLLAMA__" else None
-    OPENAI_MODEL: str = "mistral"
+    OPENAI_BASE_URL: str | None = None
+    # OPENAI_BASE_URL: str | None = "http://localhost:11434/v1"
+    OPENAI_MODEL_ID: str = "mistral"
 
     class Config:
         case_sensitive = True
