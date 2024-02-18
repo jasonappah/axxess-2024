@@ -8,6 +8,7 @@ class UserRole(str, Enum):
     CARETAKER = "CARETAKER"
 
 id_factory = lambda: str(uuid())
+now_factory = lambda: datetime.now()
 class FrequencyUnit(str, Enum):
     HOUR = "HOUR"
     DAY = "DAY"
@@ -21,6 +22,7 @@ class Prescription(SQLModel, table=True):
     user_id: str = Field(foreign_key="user.id")
     user: "User" = Relationship(back_populates="prescriptions")
     medication_name: str
+    created_at: datetime | None = Field(default_factory=now_factory)
 
     # {frequency_number} times per {frequency_unit_number} {frequency_unit}
     # e.g. 2 pills per 1 DAY
@@ -56,6 +58,7 @@ class UserCreate(UserBase):
 class User(UserBase, table=True):
     prescriptions: list[Prescription] = Relationship(back_populates="user")
     id: str | None = Field(default_factory=id_factory, primary_key=True)
+    created_at: datetime | None = Field(default_factory=now_factory)
 
 
 class UserReadWithPrescriptions(UserBase):
