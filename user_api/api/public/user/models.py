@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 from sqlmodel import Field, Relationship, SQLModel
 from uuid import uuid4 as uuid
@@ -59,8 +60,16 @@ class User(UserBase, table=True):
     prescriptions: list[Prescription] = Relationship(back_populates="user")
     id: str | None = Field(default_factory=id_factory, primary_key=True)
     created_at: datetime | None = Field(default_factory=now_factory)
+    chat_messages: list["ChatMessage"] = Relationship(back_populates="user")
 
 
 class UserReadWithPrescriptions(UserBase):
     prescriptions: list[Prescription] = []
     id: str
+
+class ChatMessage(SQLModel, table=True):
+    id: str | None = Field(default_factory=id_factory, primary_key=True)
+    user_id: str = Field(foreign_key="user.id")
+    user: User = Relationship(back_populates="chat_messages")
+    message: str
+    created_at: datetime | None = Field(default_factory=now_factory)
