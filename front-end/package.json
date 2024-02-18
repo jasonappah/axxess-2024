@@ -15,7 +15,7 @@
         "react-bootstrap-typeahead": "^6.1.0",
         "react-device-detect": "^2.2.3",
         "react-highlight": "^0.15.0",
-        "sharp": "^0.31.0",
+        "sharp": "^0.32.6",
         "ts-loader": "^9.4.2",
         "typescript": "^5.0.4",
         "uuid": "^8.3.2"
