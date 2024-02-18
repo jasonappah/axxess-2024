@@ -43,6 +43,11 @@ void loop() {
     nums_pills = command - '0';
     ready_to_dispense = true;
   }
+  if (nums_pills <= 0) {
+    digitalWrite(led_g, LOW);
+    digitalWrite(led_y, LOW);
+    digitalWrite(led_r, HIGH);
+  }
 
   if (ready_to_dispense) {
     digitalWrite(led_g, HIGH);

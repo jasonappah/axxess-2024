@@ -14,7 +14,10 @@ try:
         #TODO: Change the user input to the API response of number of pills to dispense
         endpoint = API_ENDPOINT + "/users/due_for_dispense"
         response = requests.get(endpoint)
-        print(response.json())
+        if int(response.json()) == 0:
+            
+            time.sleep(1)
+            continue
         user_input = str(response.json())
         send_command(ser, user_input)
         print("send")
@@ -26,7 +29,7 @@ try:
         #Send the dispensing event to the API server
         endpoint = API_ENDPOINT + "/users/consume"
         response = requests.get(endpoint)
-        
+
 
 
 except KeyboardInterrupt:

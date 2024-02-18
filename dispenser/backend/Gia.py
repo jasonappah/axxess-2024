@@ -114,7 +114,9 @@ class Gia:
         # endpoint = API_ENDPOINT + "/pill/drink"
         # response = requests.get(endpoint)
         #Assume there are 2 pills in the dispenser
-        pills_to_dispense = 2
+        endpoint = API_ENDPOINT + "/users/due_for_dispense"
+        response = requests.get(endpoint)
+        pills_to_dispense = int(response.json())
 
         if self.first_occurance_of_pill_time is None and pills_to_dispense > 0:
             print("Set first occurance of pill time to now")
