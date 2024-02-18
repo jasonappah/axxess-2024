@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: row;
     background-image: linear-gradient(#ff8a00, #e52e71);
-   
+
 }
 
 .menu {
@@ -43,12 +43,17 @@
 }
 
 @keyframes fadeUp {
-        0% {
+    0% {
         opacity: 0;
         transform: translateY(1rem);
-     }
+    }
+
     100% {
         opacity: 1;
         transform: translateY(0);
-        }
     }
+}
+
+.css-y8ay40-MuiTableCell-root {
+    background-color: transparent !important;
+}
