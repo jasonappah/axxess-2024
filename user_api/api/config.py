@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     API_USERNAME: str = "svc_test"
     API_PASSWORD: str = "superstrongpassword"
 
-    CREATE_NEW_CHAT_SESSION_AFTER = timedelta(minutes=5)
+    CREATE_NEW_CHAT_SESSION_IF_LAST_MSG_OLDER_THAN: timedelta = timedelta(minutes=5)
 
     class Config:
         case_sensitive = True
