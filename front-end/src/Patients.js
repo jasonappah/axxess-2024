@@ -23,19 +23,19 @@ export default function Patients(props) {
 			id: "456789",
 			name: "BK",
 			medicines: ["med3", "med4"],
-			age: 60,
+			age: 20,
 		},
         abcd: {
 			id: "abcd",
 			name: "Jason",
 			medicines: ["med3", "med4"],
-			age: 60,
+			age: 20,
 		},
         efgh: {
 			id: "efgh",
 			name: "Dan",
 			medicines: ["med3", "med4"],
-			age: 60,
+			age: 20,
 		},
 	});
 
