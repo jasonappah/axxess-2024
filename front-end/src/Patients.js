@@ -44,7 +44,7 @@ export default function Patients(props) {
 						<TableCell>ID</TableCell>
 						<TableCell>Name</TableCell>
 						<TableCell>Prescriptions</TableCell>
-						<TableCell>Age</TableCell>
+						<TableCell></TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
