@@ -6,8 +6,8 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = f"SQLModel API - {os.getenv('ENV', 'development').capitalize()}"
-    DESCRIPTION: str = "A FastAPI + SQLModel production-ready API"
+    PROJECT_NAME: str = f"Gia API - {os.getenv('ENV', 'development').capitalize()}"
+    DESCRIPTION: str = "API for Gia, the prescription management system."
     ENV: Literal["development", "staging", "production"] = "development"
     VERSION: str = "0.1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
