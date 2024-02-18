@@ -2,11 +2,9 @@ from fastapi import APIRouter, Depends, status
 from sqlmodel import Session, select
 
 from api.database import Session, get_session
-from api.public.chat.crud import find_session_by_id, message
+from api.public.chat.crud import ChatMessageResponse, find_session_by_id, message
 from api.public.chat.models import (
-    ChatMessage,
     ChatMessageBase,
-    ChatSession,
     ChatSession,
 )
 from api.utils.logger import logger_config
@@ -35,7 +33,7 @@ def get_sessions(db: Session = Depends(get_session)):
 
 @router.post(
     "/message",
-    response_model=tuple[ChatSession,ChatMessage],
+    response_model=ChatMessageResponse,
     status_code=status.HTTP_201_CREATED,
 )
 def create_message(m: ChatMessageBase, user_id: str, db: Session = Depends(get_session)):

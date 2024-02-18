@@ -1,4 +1,5 @@
 from fastapi import Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlmodel import Session, select
 from api.database import get_session
 from datetime import datetime
@@ -137,8 +138,11 @@ def create_chat_completion(
     db.refresh(chat_session)
     return msg
 
+class ChatMessageResponse(BaseModel):
+    chat_session: ChatSession
+    chat_message: ChatMessage
 
 def message(msg: ChatMessageBase, user_id: str, db: Session = Depends(get_session)):
     s = insert_message(msg, user_id, db)
     response = create_chat_completion(s, db)
-    return s, response
+    return ChatMessageResponse(chat_session=s, chat_message=response)
