@@ -25,6 +25,7 @@ export default function CreatePatient() {
 					<h1 align="center">Create Patient</h1>
 				</header>
 
+            <Box sx={{display:'flex'}}>
 				<TextField
 					required
 					id="filled-required"
@@ -94,6 +95,46 @@ export default function CreatePatient() {
 						setnumDosage(temp);
 					}}
 				/> */}
+
+                <Box sx={{display:'flex',flexDirection:'column'}}>
+                {numMedicine.map((medicine,index) =>(
+                    <Box sx={{display:'flex',flexDirection:'row'}}>
+                    <TextField
+                    required
+                    key={index}
+					id="filled-required"
+					label="Medicine"
+					variant="filled"
+				/>
+                    <TextField
+                    required 
+                    id="filled-basic" 
+                    label="Dosage" 
+                 variant="filled" 
+                />
+                </Box>
+                
+                ))}</Box>
+			
+            </Box>
+
+                <FontAwesomeIcon icon = {faCirclePlus} className="icon" onClick={(e) => 
+                {
+                var temp = [...numMedicine]
+                temp.push ("")
+                setnumMedicine (temp)
+
+                var temp = [...numDosage]
+                temp.push ("")
+                setnumDosage (temp)
+
+
+                 }} />
+
+                <Button variant="contained" color="success"> 
+                Add Patient Info
+                </Button>
+
 
 				<Button variant="Add Patient Info">Contained</Button>
 			</div>
