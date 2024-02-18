@@ -1,7 +1,15 @@
-from fastapi import Depends, HTTPException, status
-from sqlmodel import Session, select
-from api.database import get_session
-from api.public.user.models import Prescription, User, UserCreate, UserRole
+from datetime import datetime
+from fastapi import HTTPException, status
+from pydantic import BaseModel
+
+from sqlmodel import Session, select, desc
+from api.public.user.models import (
+    PillDispenseEvent,
+    Prescription,
+    User,
+    UserCreate,
+    UserRole,
+)
 from api.utils.logger import logger_config
 
 logger = logger_config(__name__)
@@ -12,7 +20,7 @@ def read_patients(db: Session = Depends(get_session)):
     return patients
 
 
-def read_user_by_id(user_id: str, db: Session = Depends(get_session)):
+def read_user_by_id(user_id: str, db: Session):
     user = db.get(User, user_id)
     if not user:
         raise HTTPException(

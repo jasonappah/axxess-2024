@@ -27,7 +27,7 @@ SYSTEM_MESSAGE = "You are a helpful assistant."
 
 
 def find_session_by_time_and_user(
-    user_id: str, dt=datetime.now(), db: Session = Depends(get_session)
+    user_id: str, db: Session, dt=datetime.now(), 
 ) -> ChatSession:
     time_limit = dt - settings.CREATE_NEW_CHAT_SESSION_IF_LAST_MSG_OLDER_THAN
     session = db.exec(
@@ -54,10 +54,10 @@ def find_session_by_time_and_user(
     s.chat_messages.append(system_msg)
     db.commit()
     db.refresh(s)
-    return find_session_by_time_and_user(user_id, dt, db)
+    return find_session_by_time_and_user(user_id, db, dt)
 
 
-def find_session_by_id(session_id: str, db: Session = Depends(get_session)):
+def find_session_by_id(session_id: str, db: Session):
     session = db.get(ChatSession, session_id)
     if not session:
         raise HTTPException(
@@ -67,7 +67,7 @@ def find_session_by_id(session_id: str, db: Session = Depends(get_session)):
     return session
 
 
-def insert_message(msg: ChatMessageBase, user_id: str, db: Session = Depends(get_session)):
+def insert_message(msg: ChatMessageBase, user_id: str, db: Session):
     if not msg.chat_session_id:
         chat_session = find_session_by_time_and_user(user_id, db=db)
         msg.chat_session_id = chat_session.id
@@ -102,7 +102,7 @@ def chat_session_to_oai_format(
 
 
 def create_chat_completion(
-    chat_session: ChatSession, db: Session = Depends(get_session)
+    chat_session: ChatSession, db: Session
 ) -> ChatMessage:
     if chat_session.id is None:
         raise HTTPException(
@@ -142,7 +142,7 @@ class ChatMessageResponse(BaseModel):
     chat_session: ChatSession
     chat_message: ChatMessage
 
-def message(msg: ChatMessageBase, user_id: str, db: Session = Depends(get_session)):
+def message(msg: ChatMessageBase, user_id: str, db: Session):
     s = insert_message(msg, user_id, db)
     response = create_chat_completion(s, db)
     return ChatMessageResponse(chat_session=s, chat_message=response)

@@ -1,8 +1,5 @@
-from fastapi import Depends
 from sqlmodel import Session, text
-
 from api.config import settings
-from api.database import get_session
 from api.public.health.models import Health, Stats, Status
 from api.utils.logger import logger_config
 
@@ -16,17 +13,19 @@ def get_health(db: Session) -> Health:
 
 
 def get_stats(db: Session) -> Stats:
-    stats = Stats(users=count_from_db("user", db), prescriptions=count_from_db("prescription", db))
+    stats = Stats(
+        users=count_from_db("user", db), prescriptions=count_from_db("prescription", db)
+    )
     logger.info("%sget_stats: %s", __name__, stats)
     return stats
 
 
-def count_from_db(table: str, db: Session = Depends(get_session)):
+def count_from_db(table: str, db: Session):
     teams = db.exec(text(f"SELECT COUNT(id) FROM {table};")).one_or_none()
     return teams[0] if teams else 0
 
 
-def health_db(db: Session = Depends(get_session)) -> Status:
+def health_db(db: Session) -> Status:
     try:
         db.exec(text(f"SELECT COUNT(id) FROM prescription;")).one_or_none()
         return Status.OK
