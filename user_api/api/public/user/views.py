@@ -12,7 +12,7 @@ from api.config import settings
 router = APIRouter()
 logger = logger_config(__name__)
 
-
+lol = 2
 
 # @router.get(
 #     "/{user_id}/due_for_dispense",
@@ -29,8 +29,9 @@ logger = logger_config(__name__)
     status_code=status.HTTP_200_OK,
 )
 def get_user_due_for_dispense_default(user_id: Annotated[str, Query(min_length=0)] = settings.SHOULD_GET_LATEST_RECORD_FROM_DB, db: Session = Depends(get_session)):
-    if user_id == settings.SHOULD_GET_LATEST_RECORD_FROM_DB:
-        user_id = get_newest_user_id(db)
+    return lol
+    # if user_id == settings.SHOULD_GET_LATEST_RECORD_FROM_DB:
+    #     user_id = get_newest_user_id(db)
     # return read_user_if_user_is_due_for_dispense(user_id=user_id, db=db)
 
 
@@ -48,7 +49,7 @@ def get_user_due_for_dispense_default(user_id: Annotated[str, Query(min_length=0
     status_code=status.HTTP_200_OK,
 )
 def user_consumed_pill_dispense_event_default(pill_dispense_id: Annotated[str, Query(min_length=0)] = settings.SHOULD_GET_LATEST_RECORD_FROM_DB, db: Session = Depends(get_session)):
-    return PillDispenseEvent(prescription_id=db.exec(select(Prescription)).first().id, consumed_time=datetime.now(), dispense_count=2)
+    return PillDispenseEvent(prescription_id=db.exec(select(Prescription)).first().id, consumed_time=datetime.now(), dispense_count=0)
 
 
     # if pill_dispense_id == settings.SHOULD_GET_LATEST_RECORD_FROM_DB:
