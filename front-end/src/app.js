@@ -67,7 +67,7 @@ function App() {
 				<div className="menu">
 					<Button
 						fullWidth
-						sx={{ padding: 2 }}
+						sx={{ padding: 2, borderRadius: "0 !important"}}
 						variant="outlined"
 						color="primary"
 						onClick={(e) => {

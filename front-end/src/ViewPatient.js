@@ -61,8 +61,8 @@ export default function ViewPatient(props) {
 			<Table stickyHeader className="med-table">
 				<colgroup>
 					<col width="35%" />
-					<col width="50%" />
-					<col width="50%" />
+					<col width="30%" />
+					<col width="20%" />
 					<col width="15%" />
 				</colgroup>
 				<TableHead>
@@ -75,7 +75,7 @@ export default function ViewPatient(props) {
 				</TableHead>
 				<TableBody>
 					{medLogs.map((medLog, index) => (
-						<TableRow key={index} className={medLog.taken ? "taken" : "missed"}>
+						<TableRow key={index} className={medLog.taken ? "taken trow" : "missed trow"}>
 							<TableCell>{medLog.name}</TableCell>
 							<TableCell>{medLog.administered}</TableCell>
                             <TableCell>{medLog.time}</TableCell>

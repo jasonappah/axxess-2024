@@ -61,7 +61,7 @@ export default function Patients(props) {
 				<TableBody>
 					{Object.keys(patients).map((id) => {
 						return (
-							<TableRow key={id} hover>
+							<TableRow key={id} hover className="trow">
 								<TableCell>
 									<FontAwesomeIcon icon={faStethoscope} className="icon" onClick={(e) => {
                                         console.log("View patient: ", patients[id]);
