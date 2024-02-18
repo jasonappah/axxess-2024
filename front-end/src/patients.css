@@ -9,3 +9,16 @@
     color: #ce0eef;
     transform: translateY(0.1rem);
 }
+
+td {
+    position: relative;
+}
+
+.patient-id {
+    text-overflow: ellipsis !important;
+    text-wrap: nowrap !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    width: 100%;
+    margin: 0;
+}

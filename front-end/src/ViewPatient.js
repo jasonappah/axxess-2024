@@ -60,26 +60,23 @@ export default function ViewPatient(props) {
 			</div>
 			<Table stickyHeader className="med-table">
 				<colgroup>
-					<col width="35%" />
-					<col width="30%" />
-					<col width="20%" />
-					<col width="15%" />
+					<col width="50%" />
+					<col width="25%" />
+					<col width="25%" />
 				</colgroup>
 				<TableHead>
 					<TableRow>
 						<TableCell>Medicine</TableCell>
-						<TableCell>Administered On</TableCell>
-                        <TableCell>Time</TableCell>
-						<TableCell>Taken</TableCell>
+						<TableCell>Amount</TableCell>
+                        <TableCell>Frequency</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{medLogs.map((medLog, index) => (
-						<TableRow key={index} className={medLog.taken ? "taken trow" : "missed trow"}>
-							<TableCell>{medLog.name}</TableCell>
-							<TableCell>{medLog.administered}</TableCell>
-                            <TableCell>{medLog.time}</TableCell>
-							<TableCell>{medLog.taken ? "Yes" : "No"}</TableCell>
+					{props.selectedPatient.prescriptions.map((prescription, index) => (
+						<TableRow key={index} className={"trow"}>
+							<TableCell>{prescription.medication_name.split(" ")[0]}</TableCell>
+							<TableCell>{prescription.medication_name.split(" ")[1]}</TableCell>
+                            <TableCell>{prescription.frequency_number + " per " + prescription.frequency_unit}</TableCell>
 						</TableRow>
 					))}
 				</TableBody>

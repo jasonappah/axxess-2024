@@ -17,7 +17,8 @@ function createCopy(pathW = '') {
                     // from any url that doesn't match the above, redirect to /index.html
                     { from: /./, to: '/index.html' },
                 ]
-            }
+            },
+            port: 3000,
         },
         module: {
             rules: [

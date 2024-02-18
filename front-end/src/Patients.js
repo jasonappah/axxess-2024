@@ -5,39 +5,28 @@ import {
 	TableHead,
 	TableRow,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStethoscope } from "@fortawesome/free-solid-svg-icons";
 
 import "./patients.css";
+import { get } from "./Misc";
 
 export default function Patients(props) {
-	const [patients, setPatients] = useState({
-		123456: {
-			id: "123456",
-			name: "Bryant Hargreaves",
-			medicines: ["med1", "med2"],
-			age: 20,
-		},
-		456789: {
-			id: "456789",
-			name: "BK",
-			medicines: ["med3", "med4"],
-			age: 20,
-		},
-        abcd: {
-			id: "abcd",
-			name: "Jason",
-			medicines: ["med3", "med4"],
-			age: 20,
-		},
-        efgh: {
-			id: "efgh",
-			name: "Dan",
-			medicines: ["med3", "med4"],
-			age: 20,
-		},
-	});
+	const [patients, setPatients] = useState({});
+
+	useEffect(() => {
+		get("users/patients").then((response) => {
+			console.log("Getting patients");
+			console.log(response);
+			if (response.status === 200) {
+				response.json().then((data) => {
+					console.log(data);
+					setPatients(data);
+				});
+			}
+		});
+	}, []);
 
 	return (
 		<div className="patients-table">
@@ -63,15 +52,23 @@ export default function Patients(props) {
 						return (
 							<TableRow key={id} hover className="trow">
 								<TableCell>
-									<FontAwesomeIcon icon={faStethoscope} className="icon" onClick={(e) => {
-                                        console.log("View patient: ", patients[id]);
-                                        props.setSelectedPatient(patients[id]);
-                                        props.setPage(2);
-                                    }} />
+									<FontAwesomeIcon
+										icon={faStethoscope}
+										className="icon"
+										onClick={(e) => {
+											console.log("View patient: ", patients[id]);
+											props.setSelectedPatient(patients[id]);
+											props.setPage(2);
+										}}
+									/>
 								</TableCell>
-								<TableCell>{patients[id].id}</TableCell>
+								<TableCell><p className="patient-id">{patients[id].id}</p></TableCell>
 								<TableCell>{patients[id].name}</TableCell>
-								<TableCell>{patients[id].medicines.join(", ")}</TableCell>
+								<TableCell>
+									{patients[id].prescriptions.map(
+										(p) => p.medication_name + ", "
+									)}
+								</TableCell>
 								<TableCell>{patients[id].age}</TableCell>
 							</TableRow>
 						);
