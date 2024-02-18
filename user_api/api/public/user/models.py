@@ -67,9 +67,15 @@ class UserReadWithPrescriptions(UserBase):
     prescriptions: list[Prescription] = []
     id: str
 
+class ChatRole(str, Enum):
+    USER = "USER"
+    SYSTEM = "SYSTEM"
+    ASSISTANT = "ASSISTANT"
+
 class ChatMessage(SQLModel, table=True):
     id: str | None = Field(default_factory=id_factory, primary_key=True)
     user_id: str = Field(foreign_key="user.id")
     user: User = Relationship(back_populates="chat_messages")
     message: str
     created_at: datetime | None = Field(default_factory=now_factory)
+    chat_role: ChatRole
