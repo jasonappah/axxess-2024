@@ -34,7 +34,8 @@ class Prescription(SQLModel, table=True):
     frequency_unit: FrequencyUnit
     # TODO: need to have dispenses serializable on a prescription
     pill_dispenses: list["PillDispenseEvent"] = Relationship(
-        back_populates="prescription"
+        back_populates="prescription",
+         sa_relationship_kwargs=dict(cascade="all, delete-orphan")
     )
 
 
@@ -64,10 +65,10 @@ class UserCreate(UserBase):
 
 
 class User(UserBase, table=True):
-    prescriptions: list[Prescription] = Relationship(back_populates="user")
+    prescriptions: list[Prescription] = Relationship(back_populates="user", sa_relationship_kwargs=dict(cascade="all, delete-orphan"))
     id: str | None = Field(default_factory=id_factory, primary_key=True)
     created_at: datetime | None = Field(default_factory=now_factory)
-    chat_sessions: list[ChatSession] = Relationship(back_populates="user")
+    chat_sessions: list[ChatSession] = Relationship(back_populates="user", sa_relationship_kwargs=dict(cascade="all, delete-orphan"))
 
 
 class UserReadWithPrescriptions(UserBase):
@@ -75,8 +76,12 @@ class UserReadWithPrescriptions(UserBase):
     id: str
 
 
+"""
+in real world:
+- pills 'dispensing' means that the button on the dispenser to get the pills out is now active and will dispense the pills when pressed
+- pills 'consumed' means that you actually took the pills, or at least pressed the button to get the pills out
+"""
 class PillDispenseEvent(SQLModel, table=True):
-    # TODO: probably need to have these cascade on delete from prescription deletions
     id: str | None = Field(default_factory=id_factory, primary_key=True)
     prescription_id: str = Field(foreign_key="prescription.id")
     prescription: "Prescription" = Relationship(back_populates="pill_dispenses")
@@ -85,15 +90,3 @@ class PillDispenseEvent(SQLModel, table=True):
     consumed_time: datetime | None = None
 
 
-"""
-need to automatically create a pill dispense at the correct time for each prescription
-e.g. if a prescription is created with frequency_number = 1, frequency_unit_number = 6, frequency_unit = "HOUR"
-then we need to create a pill dispense every 6 hours
-then we need to have an endpoint to mark a pill dispense as consumed
-
-in real world:
-- pills 'dispensing' means that the button on the dispenser to get the pills out is now active and will dispense the pills when pressed
-- pills 'consumed' means that you actually took the pills, or at least pressed the button to get the pills out
-
-need an endpoint to mark a pill dispense as consumed
-"""

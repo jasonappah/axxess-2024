@@ -15,7 +15,7 @@ class ChatSession(SQLModel, table=True):
     user: "User" = Relationship(back_populates="chat_sessions")
     created_at: datetime | None = Field(default_factory=now_factory)
     # TODO: need to have messages serializable on a session
-    chat_messages: list["ChatMessage"] = Relationship(back_populates="chat_session")
+    chat_messages: list["ChatMessage"] = Relationship(back_populates="chat_session", sa_relationship_kwargs=dict(cascade="all, delete-orphan"))
 
 
 class ChatMessageBase(SQLModel):
