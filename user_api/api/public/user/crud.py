@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from sqlmodel import Session, select
 from api.database import get_session
-from api.public.user.models import Prescription, User, UserCreate, UserRole
+from api.public.user.models import ChatMessageBase, Prescription, User, UserCreate, UserRole, ChatMessage
 from api.utils.logger import logger_config
 
 logger = logger_config(__name__)
@@ -31,3 +31,14 @@ def insert_user(user_create: UserCreate, db: Session = Depends(get_session)):
     db.commit()
     db.refresh(user)
     return user
+
+def read_messages_by_user(user_id: str, db: Session = Depends(get_session)):
+    messages = db.exec(select(ChatMessage).where(User.id == user_id)).all()
+    return messages
+
+def insert_message(msg: ChatMessageBase, db: Session = Depends(get_session)):
+    db.add(msg)
+    db.commit()
+    db.refresh(msg)
+    return msg
+
