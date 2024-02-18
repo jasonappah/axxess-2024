@@ -33,6 +33,7 @@ export default function CreatePatient() {
 				<TextField required id="filled-required" label="ID" variant="filled" />
 				
                 <Box sx={{display:'flex',flexDirection:'column'}}>
+                    
                 {numMedicine.map((medicine,index) =>(
                     <Box sx={{display:'flex',flexDirection:'row'}}>
                     <TextField
