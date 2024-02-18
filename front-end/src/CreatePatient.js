@@ -16,42 +16,42 @@ export default function CreatePatient() {
 	const [numMedicine, setnumMedicine] = useState([]);
 	const [numDosage, setnumDosage] = useState([]);
 	const [numFrequency, setnumFrequency] = useState([]);
-    const [numUnits, setnumUnits] = useState([]);
+	const [numUnits, setnumUnits] = useState([]);
 
 	const [id, setId] = useState("patient" + Math.floor(Math.random() * 1000));
 
 	const [tempMedicine, setTempMedicine] = useState("");
 	const [tempDosage, setTempDosage] = useState("");
-    const [tempFrequency, setTempFrequency] = useState("");
-    const [tempUnits, setTempUnits] = useState("HOUR");
+	const [tempFrequency, setTempFrequency] = useState("");
+	const [tempUnits, setTempUnits] = useState("HOUR");
 
 	const [name, setName] = useState("");
 
 	function addPatientInfo(e) {
 		console.log("Adding patient info");
 
-        const prescript = numMedicine.map((medicine, index) => {
-            return {
-                "frequency_number": numFrequency[index],
-                "frequency_unit": numUnits[index],
-                "frequency_unit_number": 1,
-                "medication_name": medicine + " " + numDosage[index],
-            }
-        })
+		const prescript = numMedicine.map((medicine, index) => {
+			return {
+				frequency_number: numFrequency[index],
+				frequency_unit: numUnits[index],
+				frequency_unit_number: 1,
+				medication_name: medicine + " " + numDosage[index],
+			};
+		});
 
-        const data = {
-            "name": name,
-            "prescriptions": prescript,
-            "role": "PATIENT",
-        }
+		const data = {
+			name: name,
+			prescriptions: prescript,
+			role: "PATIENT",
+		};
 
-        post("user/" + id, data).then((response) => {
-            if (response.status === 200) {
-                console.log("Patient added");
-            } else {
-                console.log("Patient not added");
-            }
-        });
+		post("user/" + id, data).then((response) => {
+			if (response.status === 200) {
+				console.log("Patient added");
+			} else {
+				console.log("Patient not added");
+			}
+		});
 	}
 
 	return (
@@ -103,6 +103,7 @@ export default function CreatePatient() {
 						<h3>Prescriptions</h3>
 						{numMedicine.map((medicine, index) => (
 							<div
+								className="med-div"
 								style={{
 									display: "flex",
 									flexDirection: "row",
@@ -131,7 +132,7 @@ export default function CreatePatient() {
 									variant="filled"
 									placeholder="2"
 									value={numFrequency[index]}
-                                    disabled
+									disabled
 								/>
 								<Select
 									labelId="demo-simple-select-label"
@@ -141,9 +142,11 @@ export default function CreatePatient() {
 									variant="filled"
 									disabled
 								>
-									<MenuItem value={0}>Hours</MenuItem>
-									<MenuItem value={1}>Days</MenuItem>
-									<MenuItem value={2}>Weeks</MenuItem>
+									<MenuItem value={"HOUR"}>Hours</MenuItem>
+									<MenuItem value={"DAY"}>Days</MenuItem>
+									<MenuItem value={"WEEK"}>Weeks</MenuItem>
+									<MenuItem value={"MONTH"}>Months</MenuItem>
+									<MenuItem value={"YEAR"}>Years</MenuItem>
 								</Select>
 								<FontAwesomeIcon
 									icon={faCircleMinus}
@@ -205,9 +208,9 @@ export default function CreatePatient() {
 							>
 								<MenuItem value={"HOUR"}>Hours</MenuItem>
 								<MenuItem value={"DAY"}>Days</MenuItem>
-                                <MenuItem value={"WEEK"}>Weeks</MenuItem>
-                                <MenuItem value={"MONTH"}>Months</MenuItem>
-                                <MenuItem value={"YEAR"}>Years</MenuItem>
+								<MenuItem value={"WEEK"}>Weeks</MenuItem>
+								<MenuItem value={"MONTH"}>Months</MenuItem>
+								<MenuItem value={"YEAR"}>Years</MenuItem>
 							</Select>
 							<FontAwesomeIcon
 								icon={faCirclePlus}
@@ -222,20 +225,20 @@ export default function CreatePatient() {
 									temp.push(tempDosage);
 									setnumDosage(temp);
 
-                                    var temp = [...numFrequency];
-                                    temp.push(tempFrequency);
-                                    setnumFrequency(temp);
+									var temp = [...numFrequency];
+									temp.push(tempFrequency);
+									setnumFrequency(temp);
 
-                                    var temp = [...numUnits];
-                                    temp.push(tempUnits);
-                                    setnumUnits(temp);
+									var temp = [...numUnits];
+									temp.push(tempUnits);
+									setnumUnits(temp);
 								}}
 							/>
 						</div>
 					</div>
 				</Row>
 
-				<Button variant="contained" color="success" onClick={addPatientInfo}>
+				<Button variant="contained" color="primary" onClick={addPatientInfo}>
 					Add Patient Info
 				</Button>
 			</div>

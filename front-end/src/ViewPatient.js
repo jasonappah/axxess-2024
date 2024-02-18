@@ -55,7 +55,7 @@ export default function ViewPatient(props) {
 					<FontAwesomeIcon icon={faPencil} className="icon" />
 				</div>
 				<div>
-					<h3>{props.selectedPatient.id}</h3>
+					<h3>{"ID: " + props.selectedPatient.id}</h3>
 				</div>
 			</div>
 			<Table stickyHeader className="med-table">
@@ -76,7 +76,7 @@ export default function ViewPatient(props) {
 						<TableRow key={index} className={"trow"}>
 							<TableCell>{prescription.medication_name.split(" ")[0]}</TableCell>
 							<TableCell>{prescription.medication_name.split(" ")[1]}</TableCell>
-                            <TableCell>{prescription.frequency_number + " per " + prescription.frequency_unit}</TableCell>
+                            <TableCell>{prescription.frequency_unit_number == 1 ? prescription.frequency_number + " every " + prescription.frequency_unit.toLowerCase() : prescription.frequency_number + " every " + prescription.frequency_unit_number + " " + prescription.frequency_unit.toLowerCase() + "s"}</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
