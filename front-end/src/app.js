@@ -67,7 +67,7 @@ function App() {
 			<CssBaseline />
 			<div className="page">
 				<div className="menu">
-					<FontAwesomeIcon icon={faNotesMedical} size="3x" className="logo" />
+					<FontAwesomeIcon icon={faNotesMedical} size="2x" className="logo" />
 					<Button
 						fullWidth
 						sx={{ padding: 2, borderRadius: "0 !important"}}

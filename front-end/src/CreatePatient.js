@@ -3,14 +3,11 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import Button from '@mui/material/Button';
-
-
+import Button from "@mui/material/Button";
 
 export default function CreatePatient() {
-
-    const [numMedicine,setnumMedicine] = useState([""]) 
-    const [numDosage,setnumDosage] = useState([""]) 
+	const [numMedicine, setnumMedicine] = useState([""]);
+	const [numDosage, setnumDosage] = useState([""]);
 
 	return (
 		<Box
@@ -22,10 +19,9 @@ export default function CreatePatient() {
 			autoComplete="off"
 		>
 			<div>
-                
-            <header>
-                <h1 align="center">Create Patient</h1>
-            </header>
+				<header>
+					<h1 align="center">Create Patient</h1>
+				</header>
 
             <Box sx={{display:'flex'}}>
 				<TextField
@@ -34,11 +30,38 @@ export default function CreatePatient() {
 					label="Name"
 					variant="filled"
 				/>
-				<TextField
-					required
-					id="filled-required"
-					label="ID"
-					variant="filled"
+				<TextField required id="filled-required" label="ID" variant="filled" />
+				{numMedicine.map((medicine, index) => (
+					<TextField
+						required
+						key={index}
+						id="filled-required"
+						label="Medicine"
+						variant="filled"
+					/>
+				))}
+
+				{numMedicine.map((Dosage, index) => (
+					<TextField
+						required
+						id="filled-basic"
+						label="Dosage"
+						variant="filled"
+					/>
+				))}
+
+				<FontAwesomeIcon
+					icon={faCirclePlus}
+					className="icon"
+					onClick={(e) => {
+						var temp = [...numMedicine];
+						temp.push("");
+						setnumMedicine(temp);
+
+						var temp = [...numDosage];
+						temp.push("");
+						setnumDosage(temp);
+					}}
 				/>
 
                 <Box sx={{display:'flex',flexDirection:'column'}}>
@@ -81,6 +104,7 @@ export default function CreatePatient() {
                 </Button>
 
 
+				<Button variant="Add Patient Info">Contained</Button>
 			</div>
 		</Box>
 	);
