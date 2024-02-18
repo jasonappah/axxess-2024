@@ -15,7 +15,7 @@ export default function Patients(props) {
 	const [patients, setPatients] = useState({
 		123456: {
 			id: "123456",
-			name: "Bryant",
+			name: "Bryant Hargreaves",
 			medicines: ["med1", "med2"],
 			age: 20,
 		},
