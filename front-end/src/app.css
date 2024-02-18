@@ -7,7 +7,8 @@
 
     display: flex;
     flex-direction: row;
-    /* background: linear-gradient(0deg, #762285, #b141c5); */
+    background-image: linear-gradient(#ff8a00, #e52e71);
+   
 }
 
 .menu {
@@ -42,13 +43,12 @@
 }
 
 @keyframes fadeUp {
-    0% {
+        0% {
         opacity: 0;
         transform: translateY(1rem);
-    }
+     }
     100% {
         opacity: 1;
         transform: translateY(0);
+        }
     }
-    
-}
