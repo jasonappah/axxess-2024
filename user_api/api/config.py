@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 import secrets
 from typing import Literal
@@ -14,6 +15,8 @@ class Settings(BaseSettings):
     DATABASE_URI: str = "sqlite:///data/database.db"
     API_USERNAME: str = "svc_test"
     API_PASSWORD: str = "superstrongpassword"
+
+    CREATE_NEW_CHAT_SESSION_AFTER = timedelta(minutes=5)
 
     class Config:
         case_sensitive = True
