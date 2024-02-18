@@ -10,6 +10,8 @@ import { Button } from "@mui/material";
 import Patients from "./Patients";
 import CreatePatient from "./CreatePatient";
 import ViewPatient from "./ViewPatient";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faNotesMedical } from "@fortawesome/free-solid-svg-icons";
 
 const theme = createTheme({
 	palette: {
@@ -65,6 +67,7 @@ function App() {
 			<CssBaseline />
 			<div className="page">
 				<div className="menu">
+					<FontAwesomeIcon icon={faNotesMedical} size="3x" className="logo" />
 					<Button
 						fullWidth
 						sx={{ padding: 2, borderRadius: "0 !important"}}
