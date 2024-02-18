@@ -31,7 +31,7 @@ def find_session_by_time_and_user(
 
 
 def find_session_by_id(session_id: str, db: Session = Depends(get_session)):
-    session = db.get(ChatSessionRead, session_id)
+    session = db.get(ChatSession, session_id)
     if not session:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

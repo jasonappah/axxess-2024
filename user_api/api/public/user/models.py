@@ -59,6 +59,10 @@ class User(UserBase, table=True):
     id: str | None = Field(default_factory=id_factory, primary_key=True)
     created_at: datetime | None = Field(default_factory=now_factory)
 
+    # TODO: is there a nice way to fix this type issue?
+    chat_sessions: list["ChatSession"] = Relationship(back_populates="user")
+    chat_messages: list["ChatMessage"] = Relationship(back_populates="user")
+
 
 class UserReadWithPrescriptions(UserBase):
     prescriptions: list[Prescription] = []

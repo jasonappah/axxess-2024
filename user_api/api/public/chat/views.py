@@ -1,36 +1,29 @@
 from fastapi import APIRouter, Depends, status
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from api.database import Session, get_session
-from api.public.user.crud import read_user_by_id, read_patients, insert_user
-from api.public.user.models import UserCreate, UserReadWithPrescriptions
+from api.public.chat.crud import find_session_by_id
+from api.public.chat.models import ChatSession, ChatSessionRead
 from api.utils.logger import logger_config
 
 router = APIRouter()
 logger = logger_config(__name__)
 
 
-# @router.get(
-#     "/patients",
-#     response_model=list[UserReadWithPrescriptions],
-#     status_code=status.HTTP_200_OK,
-# )
-# def get_patients(db: Session = Depends(get_session)):
-#     return read_patients(db=db)
+@router.get(
+    "/session/{session_id}",
+    response_model=ChatSessionRead,
+    status_code=status.HTTP_200_OK,
+)
+def get_session_by_id(session_id: str, db: Session = Depends(get_session)):
+    return find_session_by_id(session_id=session_id, db=db)
 
 
-# @router.get(
-#     "/{user_id}",
-#     response_model=UserReadWithPrescriptions,
-#     status_code=status.HTTP_200_OK,
-# )
-# def get_user_by_id(user_id: str, db: Session = Depends(get_session)):
-#     return read_user_by_id(user_id=user_id, db=db)
+@router.get(
+    "/sessions",
+    response_model=list[ChatSessionRead],
+    status_code=status.HTTP_200_OK,
+)
+def get_sessions(db: Session = Depends(get_session)):
+    return db.exec(select(ChatSession)).all()
 
-# @router.post(
-#     "/{user_id}",
-#     response_model=UserReadWithPrescriptions,
-#     status_code=status.HTTP_200_OK,
-# )
-# def create_user(user_create: UserCreate, db: Session = Depends(get_session)):
-#     return insert_user(user_create=user_create, db=db)
