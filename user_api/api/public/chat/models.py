@@ -1,7 +1,6 @@
 from datetime import datetime
 from enum import Enum
 from sqlmodel import Field, Relationship, SQLModel
-from uuid import uuid4 as uuid
 from api.utils.factories import id_factory, now_factory
 from api.public.user.models import User
 
