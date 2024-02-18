@@ -29,6 +29,7 @@ function App() {
 	const [page, setPage] = useState(0);
 	const [content, setContent] = useState(<Patients />);
 	const [selectedPatient, setSelectedPatient] = useState(<Patients />);
+	const [isEditing, setIsEditing] = useState(false);
 
 	useEffect(() => {
 		switch (page) {
@@ -42,6 +43,8 @@ function App() {
 					<CreatePatient
 						setPage={setPage}
 						setSelectedPatient={setSelectedPatient}
+						selectedPatient={selectedPatient}
+						isEditing={isEditing}
 					/>
 				);
 				break;
@@ -51,6 +54,7 @@ function App() {
 						selectedPatient={selectedPatient}
 						setPage={setPage}
 						setSelectedPatient={setSelectedPatient}
+						setIsEditing={setIsEditing}
 					/>
 				);
 				break;
@@ -60,7 +64,7 @@ function App() {
 				);
 				break;
 		}
-	}, [page]);
+	}, [page, selectedPatient, isEditing]);
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -87,6 +91,8 @@ function App() {
 						variant="outlined"
 						color="primary"
 						onClick={(e) => {
+							setIsEditing(false);
+							console.log("Create patient");
 							setPage(1);
 						}}
 					>

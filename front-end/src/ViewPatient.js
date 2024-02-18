@@ -52,7 +52,10 @@ export default function ViewPatient(props) {
 			<div className="view-container">
 				<div className="space-between">
 					<h2>{props.selectedPatient.name}</h2>
-					<FontAwesomeIcon icon={faPencil} className="icon" />
+					<FontAwesomeIcon icon={faPencil} className="icon" onClick={() => {
+						props.setIsEditing(true);
+						props.setPage(1);
+					}} />
 				</div>
 				<div>
 					<h3>{"ID: " + props.selectedPatient.id}</h3>

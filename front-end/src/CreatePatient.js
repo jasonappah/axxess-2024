@@ -12,7 +12,7 @@ import { Row } from "react-bootstrap";
 import "./createPatient.css";
 import { post } from "./Misc";
 
-export default function CreatePatient() {
+export default function CreatePatient(props) {
 	const [numMedicine, setnumMedicine] = useState([]);
 	const [numDosage, setnumDosage] = useState([]);
 	const [numFrequency, setnumFrequency] = useState([]);
@@ -27,6 +27,47 @@ export default function CreatePatient() {
 
 	const [name, setName] = useState("");
 
+	useEffect(() => {
+		if (props.isEditing) {
+			// fill with selected patient info if props.isEditing
+			console.log("Editing patient");
+			console.log(props.selectedPatient);
+			setName(props.selectedPatient.name);
+			setId(props.selectedPatient.id);
+			setnumMedicine(
+				props.selectedPatient.prescriptions.map(
+					(prescription) => prescription.medication_name.split(" ")[0]
+				)
+			);
+			setnumDosage(
+				props.selectedPatient.prescriptions.map(
+					(prescription) => prescription.medication_name.split(" ")[1]
+				)
+			);
+			setnumFrequency(
+				props.selectedPatient.prescriptions.map(
+					(prescription) => prescription.frequency_number
+				)
+			);
+			setnumUnits(
+				props.selectedPatient.prescriptions.map(
+					(prescription) => prescription.frequency_unit
+				)
+			);
+		} else {
+			setnumMedicine([]);
+			setnumDosage([]);
+			setnumFrequency([]);
+			setnumUnits([]);
+			setId("patient" + Math.floor(Math.random() * 1000));
+			setTempMedicine("");
+			setTempDosage("");
+			setTempFrequency("");
+			setTempUnits("HOUR");
+			setName("");
+		}
+	}, [props.selectedPatient, props.isEditing]);
+
 	function addPatientInfo(e) {
 		console.log("Adding patient info");
 
@@ -39,20 +80,63 @@ export default function CreatePatient() {
 			};
 		});
 
+		console.log(prescript);
+
 		const data = {
 			name: name,
 			prescriptions: prescript,
+			id: id,
 			role: "PATIENT",
 		};
 
-		post("user/" + id, data).then((response) => {
+		var url = props.isEditing ? "users/update/" : "users/";
+		console.log(url);
+
+		post(url + id, data).then((response) => {
 			if (response.status === 200) {
 				console.log("Patient added");
+				setnumMedicine([]);
+				setnumDosage([]);
+				setnumFrequency([]);
+				setnumUnits([]);
+				setId("patient" + Math.floor(Math.random() * 1000));
+				setTempMedicine("");
+				setTempDosage("");
+				setTempFrequency("");
+				setTempUnits("HOUR");
+				setName("");
+				props.setPage(0);
 			} else {
 				console.log("Patient not added");
 			}
 		});
 	}
+
+    function deletePatient(e) {
+        console.log("Deleting patient");
+
+        var url = "users/delete/" + id;
+        console.log(url);
+
+        post(url, {}).then((response) => {
+            if (response.status === 200) {
+                console.log("Patient deleted");
+                setnumMedicine([]);
+                setnumDosage([]);
+                setnumFrequency([]);
+                setnumUnits([]);
+                setId("patient" + Math.floor(Math.random() * 1000));
+                setTempMedicine("");
+                setTempDosage("");
+                setTempFrequency("");
+                setTempUnits("HOUR");
+                setName("");
+                props.setPage(0);
+            } else {
+                console.log("Patient not deleted");
+            }
+        });
+    }
 
 	return (
 		<Box
@@ -66,7 +150,7 @@ export default function CreatePatient() {
 		>
 			<div className="temp">
 				<header>
-					<h1 align="center">Create Patient</h1>
+					<h1 align="center">{props.isEditing ? "Edit " : "Create "}Patient</h1>
 				</header>
 
 				<Row className="cp-row">
@@ -232,15 +316,34 @@ export default function CreatePatient() {
 									var temp = [...numUnits];
 									temp.push(tempUnits);
 									setnumUnits(temp);
+
+									setTempMedicine("");
+									setTempDosage("");
+									setTempFrequency("");
+									setTempUnits("HOUR");
 								}}
 							/>
 						</div>
 					</div>
 				</Row>
 
-				<Button variant="contained" color="primary" onClick={addPatientInfo}>
-					Add Patient Info
-				</Button>
+				<div className="row">
+					<Button
+						variant="contained"
+						color={props.isEditing ? "warning" : "primary"}
+						onClick={addPatientInfo}
+					>
+						{props.isEditing ? "Edit Patient" : "Add Patient"}
+					</Button>
+                    {props.isEditing ?
+                    <Button
+						variant="contained"
+						color={"error"}
+						onClick={deletePatient}
+					>
+						Delete Patient
+					</Button> : null}
+				</div>
 			</div>
 		</Box>
 	);

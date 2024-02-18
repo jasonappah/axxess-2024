@@ -43,7 +43,7 @@ export default function Patients(props) {
 						<TableCell></TableCell>
 						<TableCell>ID</TableCell>
 						<TableCell>Name</TableCell>
-						<TableCell>Medicines</TableCell>
+						<TableCell>Prescriptions</TableCell>
 						<TableCell>Age</TableCell>
 					</TableRow>
 				</TableHead>
@@ -62,12 +62,14 @@ export default function Patients(props) {
 										}}
 									/>
 								</TableCell>
-								<TableCell><p className="patient-id">{patients[id].id}</p></TableCell>
+								<TableCell>
+									<p className="patient-id">{patients[id].id}</p>
+								</TableCell>
 								<TableCell>{patients[id].name}</TableCell>
 								<TableCell>
-									{patients[id].prescriptions.map(
-										(p) => p.medication_name + ", "
-									)}
+									{patients[id].prescriptions
+										.map((p) => p.medication_name + ", ")
+										.join(" ").slice(0, -2)}
 								</TableCell>
 								<TableCell>{patients[id].age}</TableCell>
 							</TableRow>

@@ -4,14 +4,14 @@
 
 ::-webkit-scrollbar-track {
     border-radius: 8px;
-    background-color: #d578e5;
+    background-color: #f8e7d2;
     border: 1px solid #cacaca00;
     border-radius: 0 !important;
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: 8px;
-    background-color: #b141c5;
+    background-color: #e88cf8;
 }
 
 .page {
