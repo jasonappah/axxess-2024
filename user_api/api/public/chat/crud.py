@@ -18,7 +18,6 @@ from openai.types.chat import ChatCompletionMessageParam
 
 client = OpenAI(base_url=settings.OPENAI_BASE_URL, api_key=settings.OPENAI_API_KEY)
 
-print("dssdfsgs",settings.OPENAI_MODEL_ID, settings.OPENAI_API_KEY, settings.OPENAI_BASE_URL)
 
 logger = logger_config(__name__)
 
