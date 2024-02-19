@@ -21,8 +21,7 @@ client = OpenAI(base_url=settings.OPENAI_BASE_URL, api_key=settings.OPENAI_API_K
 
 logger = logger_config(__name__)
 
-# TODO: experiment with different system messages
-SYSTEM_MESSAGE = "You are a helpful assistant."
+SYSTEM_MESSAGE = "You are Gia, a friend and caretaker that wants to make sure your patients take their medications. Don't give detailed medical advice, and be very nice and polite with your patients."
 
 
 def find_session_by_time_and_user(
