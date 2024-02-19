@@ -12,7 +12,7 @@ int nums_pills = 0;
 
 void setup() {
   myservo.attach(servo);  // attaches the servo on pin 9 to the servo object
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(led_r, OUTPUT);
   pinMode(led_y, OUTPUT);
   pinMode(led_g, OUTPUT);
@@ -44,9 +44,12 @@ void loop() {
     ready_to_dispense = true;
   }
   if (nums_pills <= 0) {
+    ready_to_dispense = false;
     digitalWrite(led_g, LOW);
     digitalWrite(led_y, LOW);
     digitalWrite(led_r, HIGH);
+    delay(500);
+    return;
   }
 
   if (ready_to_dispense) {
@@ -69,8 +72,10 @@ void loop() {
     nums_pills = 0;
     ready_to_dispense = false;
     // Send message to server
-    Serial.println("dispensed");
+    Serial.println("1");
   }
+
+  delay(50);
 
 
 

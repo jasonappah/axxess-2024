@@ -1,5 +1,4 @@
-TIME_BEFORE_CRY = 5 # 5 seconds
-
+TIME_BEFORE_CRY = 10 # 5 seconds
 
 import tkinter as tk
 from tkinter import PhotoImage
@@ -10,6 +9,9 @@ import json
 import time
 
 import os
+
+def send_command(ser, command):
+    ser.write(command.encode())
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 emotion_folder_file_path = os.path.join(script_dir, "emotions/")
@@ -107,35 +109,36 @@ class Gia:
 
     def check_if_pill_drink(self):
         if self.isConversing:
-            self.root.after(1000, self.check_if_pill_drink)
             return
-        print("Checking if pill is drunk")
         #Poll the server to see how many pill are dispensed
         # endpoint = API_ENDPOINT + "/pill/drink"
         # response = requests.get(endpoint)
         #Assume there are 2 pills in the dispenser
         endpoint = API_ENDPOINT + "/users/due_for_dispense"
         response = requests.get(endpoint)
-        pills_to_dispense = int(response.json())
+        self.pills_to_dispense = int(response.json())
+        pills_to_dispense = self.pills_to_dispense
+        print(pills_to_dispense)
+        if pills_to_dispense <= 0:
+            if self.first_occurance_of_pill_time:
+                if self.current_emotion != "love":
+                    self.change_emotion("love")
+                    text_to_speech("I am happy that you took your pills")
+                    #Wait for the audio to finish
+                    time.sleep(2)
+            self.root.after(1000, self.check_if_pill_drink)
+            return
 
-        if self.first_occurance_of_pill_time is None and pills_to_dispense > 0:
+        if self.first_occurance_of_pill_time is None:
             print("Set first occurance of pill time to now")
             self.first_occurance_of_pill_time = time.time()
 
-        if time.time() - self.first_occurance_of_pill_time > TIME_BEFORE_CRY:
+        elif self.first_occurance_of_pill_time and time.time() - self.first_occurance_of_pill_time > TIME_BEFORE_CRY:
             if self.current_emotion != "cry":
                 self.change_emotion("cry")
                 text_to_speech("You have not taken your pills, you should take them")
-        
-        if self.first_occurance_of_pill_time is not None and pills_to_dispense == 0:
-            if self.current_emotion != "love":
-                self.change_emotion("love")
-                text_to_speech("I am happy that you took your pills")
-        
-        if pills_to_dispense == 0:
-            if self.current_emotion != "smile":
-                self.first_occurance_of_pill_time = None
-                self.change_emotion("smile")
+                #Wait for the audio to finish
+                time.sleep(2)
         
 
         self.root.after(1000, self.check_if_pill_drink)
