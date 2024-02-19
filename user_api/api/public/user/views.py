@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlmodel import Session, select
 
 from api.database import Session, get_session
-from api.public.user.crud import get_newest_pill_dispense_id, get_newest_user_id, mark_dispense_as_consumed, read_user_by_id, read_patients, insert_user, read_user_if_user_is_due_for_dispense
+from api.public.user.crud import get_newest_pill_dispense_id, get_newest_user_id, mark_dispense_as_consumed, read_user_by_id, read_patients, insert_user, read_user_if_user_is_due_for_dispense, update_user, delete_user
 from api.public.user.models import PillDispenseEvent, Prescription, UserCreate, UserReadWithPrescriptions
 from api.utils.logger import logger_config
 from api.config import settings
@@ -93,3 +93,18 @@ def get_user_by_id(user_id: str, db: Session = Depends(get_session)):
 )
 def create_user(user_create: UserCreate, db: Session = Depends(get_session)):
     return insert_user(user_create=user_create, db=db)
+
+@router.post(
+    "/update/{user_id}",
+    response_model=UserReadWithPrescriptions,
+    status_code=status.HTTP_200_OK,
+)
+def update_usr(user_id: str, user_create: UserCreate, db: Session = Depends(get_session)):
+    return update_user(user_id=user_id, user=user_create, db=db)
+
+@router.post(
+    "/delete/{user_id}",
+    status_code=status.HTTP_200_OK,
+)
+def delete_usr(user_id: str, db: Session = Depends(get_session)):
+    return delete_user(user_id=user_id, db=db)

@@ -92,6 +92,21 @@ export default function CreatePatient(props) {
 		var url = props.isEditing ? "users/update/" : "users/";
 		console.log(url);
 
+		// if (props.isEditing) {
+		// 	setnumMedicine([]);
+		// 	setnumDosage([]);
+		// 	setnumFrequency([]);
+		// 	setnumUnits([]);
+		// 	setId("patient" + Math.floor(Math.random() * 1000));
+		// 	setTempMedicine("");
+		// 	setTempDosage("");
+		// 	setTempFrequency("");
+		// 	setTempUnits("HOUR");
+		// 	setName("");
+		// 	props.setPage(0);
+		// 	return;
+		// }
+
 		post(url + id, data).then((response) => {
 			if (response.status === 200) {
 				console.log("Patient added");
@@ -112,31 +127,43 @@ export default function CreatePatient(props) {
 		});
 	}
 
-    function deletePatient(e) {
-        console.log("Deleting patient");
+	function deletePatient(e) {
+		console.log("Deleting patient");
 
-        var url = "users/delete/" + id;
-        console.log(url);
+		var url = "users/delete/" + id;
+		console.log(url);
 
-        post(url, {}).then((response) => {
-            if (response.status === 200) {
-                console.log("Patient deleted");
-                setnumMedicine([]);
-                setnumDosage([]);
-                setnumFrequency([]);
-                setnumUnits([]);
-                setId("patient" + Math.floor(Math.random() * 1000));
-                setTempMedicine("");
-                setTempDosage("");
-                setTempFrequency("");
-                setTempUnits("HOUR");
-                setName("");
-                props.setPage(0);
-            } else {
-                console.log("Patient not deleted");
-            }
-        });
-    }
+		post(url, {}).then((response) => {
+			if (response.status === 200) {
+				console.log("Patient deleted");
+				setnumMedicine([]);
+				setnumDosage([]);
+				setnumFrequency([]);
+				setnumUnits([]);
+				setId("patient" + Math.floor(Math.random() * 1000));
+				setTempMedicine("");
+				setTempDosage("");
+				setTempFrequency("");
+				setTempUnits("HOUR");
+				setName("");
+				props.setPage(0);
+			} else {
+				console.log("Patient not deleted");
+			}
+		});
+		// console.log("Patient deleted");
+		// setnumMedicine([]);
+		// setnumDosage([]);
+		// setnumFrequency([]);
+		// setnumUnits([]);
+		// setId("patient" + Math.floor(Math.random() * 1000));
+		// setTempMedicine("");
+		// setTempDosage("");
+		// setTempFrequency("");
+		// setTempUnits("HOUR");
+		// setName("");
+		// props.setPage(0);
+	}
 
 	return (
 		<Box
@@ -335,14 +362,11 @@ export default function CreatePatient(props) {
 					>
 						{props.isEditing ? "Edit Patient" : "Add Patient"}
 					</Button>
-                    {props.isEditing ?
-                    <Button
-						variant="contained"
-						color={"error"}
-						onClick={deletePatient}
-					>
-						Delete Patient
-					</Button> : null}
+					{props.isEditing ? (
+						<Button variant="contained" color={"error"} onClick={deletePatient}>
+							Delete Patient
+						</Button>
+					) : null}
 				</div>
 			</div>
 		</Box>
