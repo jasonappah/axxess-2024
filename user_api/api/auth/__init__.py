@@ -8,8 +8,9 @@ from api.config import settings
 basic_auth = HTTPBasic(auto_error=False)
 
 
-def authent():
-        return True
+def requires_auth():
+    return True
+
 
 # def authent(
 #     credentials: HTTPBasicCredentials = Depends(basic_auth),
