@@ -1,7 +1,6 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 from pydantic import BaseModel
 from sqlmodel import Session, select
-from api.database import get_session
 from datetime import datetime
 from api.config import settings
 from api.public.chat.models import (
@@ -15,7 +14,7 @@ from api.utils.logger import logger_config
 from openai import OpenAI
 from openai.types.chat import ChatCompletionMessageParam
 
-
+# TODO: move to a dependency?
 client = OpenAI(base_url=settings.OPENAI_BASE_URL, api_key=settings.OPENAI_API_KEY)
 
 
@@ -79,7 +78,7 @@ def insert_message(msg: ChatMessageBase, user_id: str, db: Session):
     return chat_session
 
 
-def chat_session_to_oai_format(
+def chat_session_to_openai_format(
     session: ChatSession,
 ) -> list[ChatCompletionMessageParam]:
     role_to_name = {
@@ -113,7 +112,7 @@ def create_chat_completion(
             detail="Assistant has already responded to the last message in this chat session.",
         )
 
-    messages = chat_session_to_oai_format(chat_session)
+    messages = chat_session_to_openai_format(chat_session)
     response = client.chat.completions.create(
         model=settings.OPENAI_MODEL_ID,
         messages=messages,
