@@ -39,8 +39,7 @@ def create_app(settings: Settings):
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(request: Request, exc: RequestValidationError):
         error_output = {"detail": exc.errors(), "body": exc.body}
-        # probably should use the logger here :p
-        print("ValidationError:",error_output)
+        logger.warning("Parsing error:" + str(error_output))
         return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             content=jsonable_encoder(error_output),

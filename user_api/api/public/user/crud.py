@@ -110,7 +110,6 @@ def get_newest_pill_dispense_id(db: Session):
 
 def update_user(user_id: str, user: UserCreate, db: Session):
     user2 = read_user_by_id(user_id, db)
-    print("test",user2)
     user2.name = user.name
     user2.prescriptions = []
     for p in user.prescriptions:
@@ -118,7 +117,6 @@ def update_user(user_id: str, user: UserCreate, db: Session):
         user2.prescriptions.append(prescription)
     db.commit()
     db.refresh(user2)
-    print("final",user2)
     return user2
 
 def delete_user(user_id: str, db: Session):
