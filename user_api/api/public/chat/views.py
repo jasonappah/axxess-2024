@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from sqlmodel import Session, select
 
-from api.database import Session, get_session
+from api.database import get_session
 from api.public.chat.crud import ChatMessageResponse, find_session_by_id, message
 from api.public.chat.models import (
     ChatMessageBase,

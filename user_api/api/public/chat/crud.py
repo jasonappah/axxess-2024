@@ -8,7 +8,6 @@ from api.public.chat.models import (
     ChatMessageBase,
     ChatRole,
     ChatSession,
-    ChatSession,
 )
 from api.utils.logger import logger_config
 from openai import OpenAI

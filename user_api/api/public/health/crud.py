@@ -27,7 +27,7 @@ def count_from_db(table: str, db: Session):
 
 def health_db(db: Session) -> Status:
     try:
-        db.exec(text(f"SELECT COUNT(id) FROM prescription;")).one_or_none()
+        db.exec(text("SELECT COUNT(id) FROM prescription;")).one_or_none()
         return Status.OK
     except Exception as e:
         logger.exception(e)

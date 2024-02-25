@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status
 from sqlmodel import Session
 
-from api.database import Session, get_session
+from api.database import get_session
 from api.public.user.crud import mark_dispense_as_consumed, read_user_by_id, read_patients, insert_user, read_user_if_user_is_due_for_dispense, update_user, delete_user
 from api.public.user.models import UserCreate, UserReadWithPrescriptions
 from api.utils.logger import logger_config
