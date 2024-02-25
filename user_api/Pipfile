@@ -9,6 +9,7 @@ sqlmodel = "*"
 uvicorn = "*"
 pydantic-settings = "*"
 openai = "*"
+ruff = "*"
 
 [dev-packages]
 black = "*"
