@@ -2,7 +2,7 @@ from datetime import datetime
 from fastapi import HTTPException, status
 from pydantic import BaseModel
 
-from sqlmodel import Session, select, desc
+from sqlmodel import Session, select
 from api.public.user.models import (
     PillDispenseEvent,
     Prescription,
@@ -80,33 +80,7 @@ def mark_dispense_as_consumed(pill_dispense_id: str, db: Session):
     return pill_dispense
 
 
-def get_newest_user_id(db: Session):
-    user = db.exec(select(User).order_by(desc(User.created_at))).first()
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No user found",
-        )
-    if user.id is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User has no id",
-        )
-    return user.id
 
-def get_newest_pill_dispense_id(db: Session):
-    pill_dispense = db.exec(select(PillDispenseEvent).order_by(desc(PillDispenseEvent.dispense_time))).first()
-    if not pill_dispense:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No pill dispense found",
-        )
-    if pill_dispense.id is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Pill dispense has no id",
-        )
-    return pill_dispense.id
 
 def update_user(user_id: str, user: UserCreate, db: Session):
     user2 = read_user_by_id(user_id, db)
