@@ -1,10 +1,10 @@
-OFFLINE = True
-
 import serial
 from secret import API_ENDPOINT
 import requests
 import time
 
+OFFLINE = True
+USER_ID = 'SAMPLE_PATIENT'
 def send_command(ser, command):
     ser.write(command.encode())
 
@@ -18,7 +18,7 @@ while True:
     if OFFLINE:
         user_input = input("Enter the number of pills to dispense: ")
     else:
-        endpoint = API_ENDPOINT + "/users/due_for_dispense"
+        endpoint = API_ENDPOINT + f"/users/{USER_ID}/due_for_dispense"
         response = requests.get(endpoint)
         if int(response.json()) == 0:
             time.sleep(1)
@@ -34,5 +34,5 @@ while True:
     
     print("Dispensing acknowledged")
     #Send the dispensing event to the API server
-    endpoint = API_ENDPOINT + "/users/consume"
+    endpoint = API_ENDPOINT + f"/users/{USER_ID}/consume"
     response = requests.get(endpoint)

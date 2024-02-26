@@ -1,4 +1,3 @@
-TIME_BEFORE_CRY = 10 # 5 seconds
 
 import tkinter as tk
 from tkinter import PhotoImage
@@ -9,6 +8,9 @@ import json
 import time
 
 import os
+
+USER_ID = 'SAMPLE_PATIENT'
+TIME_BEFORE_CRY = 10 # 5 seconds
 
 def send_command(ser, command):
     ser.write(command.encode())
@@ -84,7 +86,7 @@ class Gia:
         #Change the mood to smile
         self.change_emotion("smile")
         #Send the text to API Server
-        endpoint = API_ENDPOINT + "/chat/message"
+        endpoint = API_ENDPOINT + f"/chat/message?=user_id={USER_ID}"
         data = {
             "chat_role": "user",
             "message": text
@@ -114,7 +116,7 @@ class Gia:
         # endpoint = API_ENDPOINT + "/pill/drink"
         # response = requests.get(endpoint)
         #Assume there are 2 pills in the dispenser
-        endpoint = API_ENDPOINT + "/users/due_for_dispense"
+        endpoint = API_ENDPOINT + f"/users/{USER_ID}/due_for_dispense"
         response = requests.get(endpoint)
         self.pills_to_dispense = int(response.json())
         pills_to_dispense = self.pills_to_dispense
