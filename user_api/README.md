@@ -5,9 +5,9 @@ A RestAPI real world app based on SQLModel [documentation example](https://sqlmo
 ### Quickstart
 Ensure you have Pipenv installed before continuing: https://pipenv.pypa.io/en/latest/#install-pipenv-today
 
-1. **Install dependencies**: `pipenv install`
-2. **Run PostgreSQL, Redis, and SuperTokens Core**: `docker compose up`
-3. **Start the API**: `pipenv run python asgi.py`
-4. **Run Celery Worker**: pipenv run celery -A worker.tasks worker --loglevel=INFO -B -s ./data/celerybeat-schedule
-5. **Explore API documentation**: `http://localhost:8080/#/`
+1. **Install dependencies locally (for type checking)**: `pipenv install`
+2. **Start API with required services**
+   a. **Dev mode**: `docker compose -f docker-compose.yml -f docker-compose.dev.yml up`
+   b. **Prod mode**: `docker compose -f docker-compose.yml up`
+3. **Explore API documentation**: `http://localhost:8080/#/`
 

@@ -1,0 +1,12 @@
+services: 
+  user_api:
+    build:
+      target: api_dev
+    volumes:
+      - .:/app
+  
+  worker:
+    build:
+      target: worker_dev
+    volumes:
+      - .:/app

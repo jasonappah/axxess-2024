@@ -12,6 +12,7 @@ openai = "*"
 ruff = "*"
 celery = {extras = ["sqlalchemy", "redis"], version = "*"}
 psycopg2 = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 black = "*"

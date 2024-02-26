@@ -43,6 +43,37 @@ services:
       POSTGRESQL_PORT: "5432"
       POSTGRESQL_TABLE_NAMES_PREFIX: "supertokens_"
 
+  user_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: api
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - user_api_network
+  
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: worker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      user_api:
+        condition: service_healthy
+    networks:
+      - user_api_network
+
 networks:
   user_api_network:
     driver: bridge
