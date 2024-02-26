@@ -4,16 +4,14 @@ import TextField from "@mui/material/TextField";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleMinus, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "@mui/material/Button";
-import { uniqueId } from "react-bootstrap-typeahead/types/utils";
-import { Label } from "@mui/icons-material";
-import { InputLabel, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import { Row } from "react-bootstrap";
 import { useLoaderData, useNavigate } from "react-router-dom";
 
 import "./createPatient.css";
 import { post } from "./Misc";
 
-export default function CreatePatient(props) {
+export default function CreatePatient() {
 	const {selectedPatient} = useLoaderData();
 	const navigate = useNavigate();
 	const [numMedicine, setnumMedicine] = useState([]);

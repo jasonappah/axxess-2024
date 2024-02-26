@@ -5,14 +5,12 @@ import {
 	TableHead,
 	TableRow,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStethoscope } from "@fortawesome/free-solid-svg-icons";
 import {Link, useLoaderData} from "react-router-dom";
 import "./patients.css";
-import { get } from "./Misc";
 
-export default function Patients(props) {
+export default function Patients() {
 	const {patients} = useLoaderData();
 
 		
