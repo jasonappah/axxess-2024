@@ -21,7 +21,7 @@ def get_stats(db: Session) -> Stats:
 
 
 def count_from_db(table: str, db: Session):
-    teams = db.exec(text(f"SELECT COUNT(id) FROM {table};")).one_or_none()
+    teams = db.exec(text(f"SELECT COUNT(*) FROM {table};")).one_or_none()
     return teams[0] if teams else 0
 
 

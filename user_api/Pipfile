@@ -10,6 +10,8 @@ uvicorn = "*"
 pydantic-settings = "*"
 openai = "*"
 ruff = "*"
+celery = {extras = ["sqlalchemy", "redis"], version = "*"}
+psycopg2 = "*"
 
 [dev-packages]
 black = "*"

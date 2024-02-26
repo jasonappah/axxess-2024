@@ -12,7 +12,8 @@ class Settings(BaseSettings):
     ENV: Literal["development", "staging", "production"] = "development"
     VERSION: str = "0.1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
-    DATABASE_URI: str = "sqlite:///data/database.db"
+    DATABASE_URI: str = "postgresql+psycopg2://dev_api_admin:dev_api_admin@localhost:5432/gia_dev"
+    CELERY_BROKER_URL: str = "redis://localhost:6379/0"
     API_USERNAME: str = "svc_test"
     API_PASSWORD: str = "superstrongpassword"
 
