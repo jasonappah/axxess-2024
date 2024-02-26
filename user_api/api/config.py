@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     CELERY_BROKER_URL: str = "redis://redis:6379/0"
     API_USERNAME: str = "svc_test"
     API_PASSWORD: str = "superstrongpassword"
+    SUPERTOKENS_CORE_URL: str = "http://localhost:3567"
+    API_DOMAIN: str = "http://localhost:8080"
+    WEBSITE_DOMAIN: str = "http://localhost:5173"
 
     CREATE_NEW_CHAT_SESSION_IF_LAST_MSG_OLDER_THAN: timedelta = timedelta(minutes=5)
 
