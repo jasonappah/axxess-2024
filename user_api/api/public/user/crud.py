@@ -19,6 +19,9 @@ def read_patients(db: Session):
     patients = db.exec(select(User).where(User.role == UserRole.PATIENT)).all()
     return patients
 
+def read_prescriptions(db: Session):
+    prescriptions = db.exec(select(Prescription)).all()
+    return prescriptions
 
 def read_user_by_id(user_id: str, db: Session):
     user = db.get(User, user_id)

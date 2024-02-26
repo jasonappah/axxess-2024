@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from sqlmodel import Field, Relationship, SQLModel
 from api.utils.factories import id_factory, now_factory
@@ -39,6 +39,39 @@ class Prescription(SQLModel, table=True):
         back_populates="prescription",
          sa_relationship_kwargs=dict(cascade="all, delete-orphan")
     )
+
+    def _delta_from_frequency(self):
+        return timedelta(**{
+            "hours": self.frequency_unit_number if self.frequency_unit == FrequencyUnit.HOUR else 0,
+            "days": self.frequency_unit_number if self.frequency_unit == FrequencyUnit.DAY else 0,
+            "weeks": self.frequency_unit_number if self.frequency_unit == FrequencyUnit.WEEK else 0,
+        })
+
+    def _should_dispense(self):
+        # perform an immediate dispense if there are no dispenses
+        if len(self.pill_dispenses) == 0:
+            return True
+        
+        now = datetime.now()
+        last_dispense = self.pill_dispenses[-1]
+        consumed_time = last_dispense.consumed_time
+        last_dispense_was_consumed = consumed_time is not None
+        if last_dispense_was_consumed:
+            return now - consumed_time > self._delta_from_frequency()
+        else:
+            return False
+        
+    def handle_dispense(self):
+        should_dispense_now = self._should_dispense()
+        if not should_dispense_now:
+            return
+        prescription_id = self.id
+        if prescription_id is None:
+            raise ValueError("Prescription must have an id")
+        pill_dispense = PillDispenseEvent(prescription_id=prescription_id, dispense_count=self.frequency_number)
+        self.pill_dispenses.append(pill_dispense)
+        return pill_dispense
+        
 
 
 class UserBase(SQLModel):
