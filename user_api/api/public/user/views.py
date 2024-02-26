@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, status
 from sqlmodel import Session
 
 from api.database import get_session
-from api.public.user.crud import mark_dispense_as_consumed, read_user_by_id, read_patients, insert_user, read_user_if_user_is_due_for_dispense, update_user, delete_user
-from api.public.user.models import UserCreate, UserReadWithPrescriptions
+from api.public.user.crud import DispensationStatus, mark_dispense_as_consumed, read_user_by_id, read_patients, insert_user, read_user_if_user_is_due_for_dispense, update_user, delete_user
+from api.public.user.models import PillDispenseEvent, UserCreate, UserReadWithPrescriptions
 from api.utils.logger import logger_config
 
 router = APIRouter()
@@ -11,7 +11,7 @@ logger = logger_config(__name__)
 
 @router.get(
     "/{user_id}/due_for_dispense",
-    response_model=list[UserReadWithPrescriptions],
+    response_model=DispensationStatus,
     status_code=status.HTTP_200_OK,
 )
 def get_user_due_for_dispense(user_id: str, db: Session = Depends(get_session)):
@@ -19,6 +19,7 @@ def get_user_due_for_dispense(user_id: str, db: Session = Depends(get_session)):
 
 @router.post(
     "/{pill_dispense_id}/consume",
+    response_model=PillDispenseEvent,
     status_code=status.HTTP_200_OK,
 )
 def user_consumed_pill_dispense_event(pill_dispense_id: str, db: Session = Depends(get_session)):
