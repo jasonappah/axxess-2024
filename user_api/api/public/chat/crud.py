@@ -13,13 +13,12 @@ from api.utils.logger import logger_config
 from openai import OpenAI
 from openai.types.chat import ChatCompletionMessageParam
 
-# TODO: move to a dependency?
 client = OpenAI(base_url=settings.OPENAI_BASE_URL, api_key=settings.OPENAI_API_KEY)
 
 
 logger = logger_config(__name__)
 
-SYSTEM_MESSAGE = "You are Gia, a friend and caretaker that wants to make sure your patients take their medications. Don't give detailed medical advice, and be very nice and polite with your patients."
+SYSTEM_MESSAGE = "You are Gia, a friend and caretaker that wants to make sure your patients take their medications. Don't give detailed medical advice, and be very nice and polite with your patients. You can only speak to your patients vocally, so do not use emojis or other special characters."
 
 
 def find_session_by_time_and_user(
@@ -138,7 +137,7 @@ class ChatMessageResponse(BaseModel):
     chat_session: ChatSession
     chat_message: ChatMessage
 
-def message(msg: ChatMessageBase, user_id: str, db: Session):
+def send_user_message(msg: ChatMessageBase, user_id: str, db: Session):
     s = insert_message(msg, user_id, db)
     response = create_chat_completion(s, db)
     return ChatMessageResponse(chat_session=s, chat_message=response)
