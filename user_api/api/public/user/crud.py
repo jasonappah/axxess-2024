@@ -74,6 +74,11 @@ def mark_dispense_as_consumed(pill_dispense_id: str, db: Session):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Pill dispense not found with id: {pill_dispense_id}",
         )
+    if pill_dispense.consumed_time is not None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Pill dispense already consumed with time: {pill_dispense.consumed_time}",
+        )
     pill_dispense.consumed_time = datetime.now()
     db.commit()
     db.refresh(pill_dispense)
