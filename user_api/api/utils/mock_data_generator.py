@@ -1,4 +1,4 @@
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from api.database import engine
 from api.public.user.models import User, Prescription, UserRole, FrequencyUnit
@@ -9,6 +9,11 @@ logger = logger_config(__name__)
 
 def create_demo_data():
     with Session(engine) as session:
+        logger.info("=========== CREATING MOCK DATA ===========")
+        if session.exec(select(User).where(User.name == "Caretaker Amy")).first():
+            logger.info("=========== MOCK DATA ALREADY EXISTS ===========")
+            return
+        
         caretaker = User(
             name="Caretaker Amy",
             role=UserRole.CARETAKER,
@@ -40,13 +45,13 @@ def create_demo_data():
             user_id=patient1.id,
             frequency_number=1,
             frequency_unit_number=1,
-            frequency_unit=FrequencyUnit.DAY,
+            frequency_unit=FrequencyUnit.MIN,
         )
 
         prescription2 = Prescription(
             medication_name="Tylenol 500mg",
             user_id=patient1.id,
-            frequency_number=1,
+            frequency_number=3,
             frequency_unit_number=6,
             frequency_unit=FrequencyUnit.HOUR,
         )
@@ -62,7 +67,7 @@ def create_demo_data():
         prescription4 = Prescription(
             medication_name="Tylenol 500mg",
             user_id=patient2.id,
-            frequency_number=1,
+            frequency_number=2,
             frequency_unit_number=6,
             frequency_unit=FrequencyUnit.HOUR,
         )
