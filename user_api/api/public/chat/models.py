@@ -2,12 +2,16 @@ from datetime import datetime
 from enum import Enum
 from sqlmodel import Field, Relationship, SQLModel
 from api.utils.factories import id_factory, now_factory
+from typing import TYPE_CHECKING
 
 class ChatRole(str, Enum):
     USER = "user"
     SYSTEM = "system"
     ASSISTANT = "assistant"
 
+
+if TYPE_CHECKING:
+    from api.public.user.models import User
 
 class ChatSession(SQLModel, table=True):
     id: str | None = Field(default_factory=id_factory, primary_key=True)
