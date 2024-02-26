@@ -1,10 +1,7 @@
-import React from "react";
-import { render } from "react-dom";
 import {
 	createBrowserRouter,
 	Link,
 	Outlet,
-	RouterProvider,
   } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { green, purple } from "@mui/material/colors";
@@ -37,7 +34,7 @@ const router = createBrowserRouter([
   },
   {
 	path: '/app',
-	element: <App />,
+	element: <AppLayout />,
 	children: [
 	  {
 		path: '/app/',
@@ -86,7 +83,7 @@ const router = createBrowserRouter([
   }
 ]);
 
-function App() {
+function AppLayout() {
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
@@ -125,6 +122,4 @@ function App() {
 	);
 }
 
-render( <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>, document.getElementById("root"));
+export default router;
