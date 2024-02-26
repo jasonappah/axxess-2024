@@ -8,25 +8,14 @@ import {
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStethoscope } from "@fortawesome/free-solid-svg-icons";
-
+import {Link, useLoaderData} from "react-router-dom";
 import "./patients.css";
 import { get } from "./Misc";
 
 export default function Patients(props) {
-	const [patients, setPatients] = useState({});
+	const {patients} = useLoaderData();
 
-	useEffect(() => {
-		get("users/patients").then((response) => {
-			console.log("Getting patients");
-			console.log(response);
-			if (response.status === 200) {
-				response.json().then((data) => {
-					console.log(data);
-					setPatients(data);
-				});
-			}
-		});
-	}, []);
+		
 
 	return (
 		<div className="patients-table">
@@ -52,15 +41,15 @@ export default function Patients(props) {
 						return (
 							<TableRow key={id} hover className="trow">
 								<TableCell>
+									<Link to={`/app/patient/${patients[id].id}`}>
 									<FontAwesomeIcon
 										icon={faStethoscope}
 										className="icon"
 										onClick={(e) => {
 											console.log("View patient: ", patients[id]);
-											props.setSelectedPatient(patients[id]);
-											props.setPage(2);
 										}}
 									/>
+									</Link>
 								</TableCell>
 								<TableCell>
 									<p className="patient-id">{patients[id].id}</p>

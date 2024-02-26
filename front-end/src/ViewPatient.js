@@ -7,58 +7,25 @@ import {
 	TableHead,
 	TableRow,
 } from "@mui/material";
-
+import { Link, useLoaderData } from "react-router-dom";
 import "./viewPatient.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 
-export default function ViewPatient(props) {
-	const [medLogs, setMedLogs] = useState([
-		{
-			name: "Tylenol",
-			administered: "2021-10-01",
-            time: "12:00 PM",
-			taken: true,
-		},
-		{
-			name: "Advil",
-			administered: "2021-10-01",
-            time: "12:00 PM",
-			taken: true,
-		},
-        {
-            name: "Tylenol",
-            administered: "2021-10-01",
-            time: "12:00 PM",
-            taken: false,
-        },
-        {
-            name: "Advil",
-            administered: "2021-10-01",
-            time: "12:00 PM",
-            taken: true,
-        },
-
-	]);
-
-	useEffect(() => {
-		if (props.selectedPatient === undefined) {
-			props.setPage(0);
-		}
-	}, [props.selectedPatient]);
+export default function ViewPatient() {
+	const {patient} = useLoaderData();
 
 	return (
 		<div className="col">
 			<div className="view-container">
 				<div className="space-between">
-					<h2>{props.selectedPatient.name}</h2>
-					<FontAwesomeIcon icon={faPencil} className="icon" onClick={() => {
-						props.setIsEditing(true);
-						props.setPage(1);
-					}} />
+					<h2>{patient.name}</h2>
+					<Link to={`/app/patient/${patient.id}/edit`}>
+						<FontAwesomeIcon icon={faPencil} className="icon"  />
+					</Link>
 				</div>
 				<div>
-					<h3>{"ID: " + props.selectedPatient.id}</h3>
+					<h3>{"ID: " + patient.id}</h3>
 				</div>
 			</div>
 			<Table stickyHeader className="med-table">
@@ -75,7 +42,7 @@ export default function ViewPatient(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{props.selectedPatient.prescriptions.map((prescription, index) => (
+					{patient.prescriptions.map((prescription, index) => (
 						<TableRow key={index} className={"trow"}>
 							<TableCell>{prescription.medication_name.split(" ")[0]}</TableCell>
 							<TableCell>{prescription.medication_name.split(" ")[1]}</TableCell>

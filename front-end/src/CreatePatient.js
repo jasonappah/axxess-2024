@@ -8,11 +8,14 @@ import { uniqueId } from "react-bootstrap-typeahead/types/utils";
 import { Label } from "@mui/icons-material";
 import { InputLabel, MenuItem, Select } from "@mui/material";
 import { Row } from "react-bootstrap";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 import "./createPatient.css";
 import { post } from "./Misc";
 
 export default function CreatePatient(props) {
+	const {selectedPatient} = useLoaderData();
+	const navigate = useNavigate();
 	const [numMedicine, setnumMedicine] = useState([]);
 	const [numDosage, setnumDosage] = useState([]);
 	const [numFrequency, setnumFrequency] = useState([]);
@@ -28,29 +31,29 @@ export default function CreatePatient(props) {
 	const [name, setName] = useState("");
 
 	useEffect(() => {
-		if (props.isEditing) {
-			// fill with selected patient info if props.isEditing
+		if (selectedPatient) {
+			// fill with selected patient info if selectedPatient
 			console.log("Editing patient");
-			console.log(props.selectedPatient);
-			setName(props.selectedPatient.name);
-			setId(props.selectedPatient.id);
+			console.log(selectedPatient);
+			setName(selectedPatient.name);
+			setId(selectedPatient.id);
 			setnumMedicine(
-				props.selectedPatient.prescriptions.map(
+				selectedPatient.prescriptions.map(
 					(prescription) => prescription.medication_name.split(" ")[0]
 				)
 			);
 			setnumDosage(
-				props.selectedPatient.prescriptions.map(
+				selectedPatient.prescriptions.map(
 					(prescription) => prescription.medication_name.split(" ")[1]
 				)
 			);
 			setnumFrequency(
-				props.selectedPatient.prescriptions.map(
+				selectedPatient.prescriptions.map(
 					(prescription) => prescription.frequency_number
 				)
 			);
 			setnumUnits(
-				props.selectedPatient.prescriptions.map(
+				selectedPatient.prescriptions.map(
 					(prescription) => prescription.frequency_unit
 				)
 			);
@@ -66,7 +69,7 @@ export default function CreatePatient(props) {
 			setTempUnits("HOUR");
 			setName("");
 		}
-	}, [props.selectedPatient, props.isEditing]);
+	}, [selectedPatient]);
 
 	function addPatientInfo(e) {
 		console.log("Adding patient info");
@@ -89,10 +92,10 @@ export default function CreatePatient(props) {
 			role: "PATIENT",
 		};
 
-		var url = props.isEditing ? "users/update/" : "users/";
+		var url = selectedPatient ? "users/update/" : "users/";
 		console.log(url);
 
-		// if (props.isEditing) {
+		// if (selectedPatient) {
 		// 	setnumMedicine([]);
 		// 	setnumDosage([]);
 		// 	setnumFrequency([]);
@@ -103,7 +106,7 @@ export default function CreatePatient(props) {
 		// 	setTempFrequency("");
 		// 	setTempUnits("HOUR");
 		// 	setName("");
-		// 	props.setPage(0);
+		// 	navigate('/app')
 		// 	return;
 		// }
 
@@ -120,7 +123,7 @@ export default function CreatePatient(props) {
 				setTempFrequency("");
 				setTempUnits("HOUR");
 				setName("");
-				props.setPage(0);
+				navigate('/app')
 			} else {
 				console.log("Patient not added");
 			}
@@ -146,7 +149,7 @@ export default function CreatePatient(props) {
 				setTempFrequency("");
 				setTempUnits("HOUR");
 				setName("");
-				props.setPage(0);
+				navigate('/app')
 			} else {
 				console.log("Patient not deleted");
 			}
@@ -162,7 +165,7 @@ export default function CreatePatient(props) {
 		// setTempFrequency("");
 		// setTempUnits("HOUR");
 		// setName("");
-		// props.setPage(0);
+		// navigate('/app')
 	}
 
 	return (
@@ -177,7 +180,7 @@ export default function CreatePatient(props) {
 		>
 			<div className="temp">
 				<header>
-					<h1 align="center">{props.isEditing ? "Edit " : "Create "}Patient</h1>
+					<h1 align="center">{selectedPatient ? "Edit " : "Create "}Patient</h1>
 				</header>
 
 				<Row className="cp-row">
@@ -353,12 +356,12 @@ export default function CreatePatient(props) {
 				<div className="row">
 					<Button
 						variant="contained"
-						color={props.isEditing ? "warning" : "primary"}
+						color={selectedPatient ? "warning" : "primary"}
 						onClick={addPatientInfo}
 					>
-						{props.isEditing ? "Edit Patient" : "Add Patient"}
+						{selectedPatient ? "Edit Patient" : "Add Patient"}
 					</Button>
-					{props.isEditing ? (
+					{selectedPatient ? (
 						<Button variant="contained" color={"error"} onClick={deletePatient}>
 							Delete Patient
 						</Button>

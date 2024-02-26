@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-
+import {
+	createBrowserRouter,
+	Link,
+	Outlet,
+	RouterProvider,
+  } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { green, purple } from "@mui/material/colors";
 
@@ -12,7 +17,7 @@ import CreatePatient from "./CreatePatient";
 import ViewPatient from "./ViewPatient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faNotesMedical } from "@fortawesome/free-solid-svg-icons";
-
+import { get } from "./Misc";
 const theme = createTheme({
 	palette: {
 		mode: "light",
@@ -25,84 +30,101 @@ const theme = createTheme({
 	},
 });
 
-function App() {
-	const [page, setPage] = useState(0);
-	const [content, setContent] = useState(<Patients />);
-	const [selectedPatient, setSelectedPatient] = useState(<Patients />);
-	const [isEditing, setIsEditing] = useState(false);
-
-	useEffect(() => {
-		switch (page) {
-			case 0:
-				setContent(
-					<Patients setPage={setPage} setSelectedPatient={setSelectedPatient} />
-				);
-				break;
-			case 1:
-				setContent(
-					<CreatePatient
-						setPage={setPage}
-						setSelectedPatient={setSelectedPatient}
-						selectedPatient={selectedPatient}
-						isEditing={isEditing}
-					/>
-				);
-				break;
-			case 2:
-				setContent(
-					<ViewPatient
-						selectedPatient={selectedPatient}
-						setPage={setPage}
-						setSelectedPatient={setSelectedPatient}
-						setIsEditing={setIsEditing}
-					/>
-				);
-				break;
-			default:
-				setContent(
-					<Patients setPage={setPage} setSelectedPatient={setSelectedPatient} />
-				);
-				break;
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <div>TODO: Login page</div>,
+  },
+  {
+	path: '/app',
+	element: <App />,
+	children: [
+	  {
+		path: '/app/',
+		element: <Patients />,
+		loader: async () => {
+			const res = await get("users/patients")
+			if (res.status === 200) {
+				const json = await res.json()
+				return {patients: json}
+			}
+			throw res
 		}
-	}, [page, selectedPatient, isEditing]);
+	  },
+	  {
+		path: '/app/patient/:patientId',
+		loader: async ({params}) => {
+			const res = await get(`users/${params.patientId}/`)
+			if (res.status === 200) {
+				const json = await res.json()
+				return {patient: json}
+			}
+			throw res
+		},
+		element: <ViewPatient />,
+	  },
+	  {
+		path: '/app/patient/:patientId/edit',
+		element: <CreatePatient />,
+		loader: async ({params}) => {
+			const res = await get(`users/${params.patientId}/`)
+			if (res.status === 200) {
+				const json = await res.json()
+				return {selectedPatient: json}
+			}
+			throw res
+		}
+	  },
+	  {
+		path: '/app/create-patient',
+		element: <CreatePatient />,
+		loader: async () => {
+			return {selectedPatient: null}
+		}
+	  },
+	]
+  }
+]);
 
+function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<div className="page">
 				<div className="menu">
-					<FontAwesomeIcon icon={faNotesMedical} size="2x" className="logo" onClick={() => {
-						setPage(0);
-					}} />
-					<Button
-						fullWidth
-						sx={{ padding: 2, borderRadius: "0 !important"}}
-						variant="outlined"
-						color="primary"
-						onClick={(e) => {
-							setPage(0);
-						}}
-					>
-						Patients
-					</Button>
-					<Button
-						sx={{ padding: 2 }}
-						fullWidth
-						variant="outlined"
-						color="primary"
-						onClick={(e) => {
-							setIsEditing(false);
-							console.log("Create patient");
-							setPage(1);
-						}}
-					>
-						Create Patient
-					</Button>
+					<Link to="/app">
+						<FontAwesomeIcon icon={faNotesMedical} size="2x" className="logo" />
+					</Link>
+					<Link to="/app">
+						<Button
+							fullWidth
+							sx={{ padding: 2, borderRadius: "0 !important"}}
+							variant="outlined"
+							color="primary"
+						>
+							Patients
+						</Button>
+					</Link>
+					<Link to="/app/create-patient">
+						<Button
+							sx={{ padding: 2 }}
+							fullWidth
+							variant="outlined"
+							color="primary"
+							onClick={(e) => {
+								console.log("Create patient");
+							}}
+						>
+							Create Patient
+						</Button>
+					</Link>
 				</div>
-				<div className="content">{content}</div>
+				<div className="content"><Outlet/></div>
 			</div>
 		</ThemeProvider>
 	);
 }
 
-render(<App />, document.getElementById("root"));
+render( <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>, document.getElementById("root"));
