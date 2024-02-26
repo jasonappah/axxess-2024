@@ -10,12 +10,14 @@ class UserRole(str, Enum):
     CARETAKER = "CARETAKER"
 
 
+# Months and years are more complex than initially anticipated since they do not always have fixed lengths.
+# To avoid any ambiguity, prescription frequency units are limited to hours, days, and weeks.
 class FrequencyUnit(str, Enum):
     HOUR = "HOUR"
     DAY = "DAY"
     WEEK = "WEEK"
-    MONTH = "MONTH"
-    YEAR = "YEAR"
+    # for testing only
+    MIN = "MIN"
 
 
 class Prescription(SQLModel, table=True):

@@ -256,8 +256,6 @@ export default function CreatePatient(props) {
 									<MenuItem value={"HOUR"}>Hours</MenuItem>
 									<MenuItem value={"DAY"}>Days</MenuItem>
 									<MenuItem value={"WEEK"}>Weeks</MenuItem>
-									<MenuItem value={"MONTH"}>Months</MenuItem>
-									<MenuItem value={"YEAR"}>Years</MenuItem>
 								</Select>
 								<FontAwesomeIcon
 									icon={faCircleMinus}
@@ -320,8 +318,6 @@ export default function CreatePatient(props) {
 								<MenuItem value={"HOUR"}>Hours</MenuItem>
 								<MenuItem value={"DAY"}>Days</MenuItem>
 								<MenuItem value={"WEEK"}>Weeks</MenuItem>
-								<MenuItem value={"MONTH"}>Months</MenuItem>
-								<MenuItem value={"YEAR"}>Years</MenuItem>
 							</Select>
 							<FontAwesomeIcon
 								icon={faCirclePlus}
