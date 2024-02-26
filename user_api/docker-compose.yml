@@ -26,6 +26,22 @@ services:
       timeout: 5s
       retries: 5
 
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0
+    ports:
+      - "3567:3567"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - user_api_network
+    environment:
+      POSTGRESQL_USER: "dev_api_admin"
+      POSTGRESQL_PASSWORD: "dev_api_admin"
+      POSTGRESQL_DATABASE_NAME: "gia_dev"
+      POSTGRESQL_HOST: "postgres"
+      POSTGRESQL_PORT: "5432"
+      POSTGRESQL_TABLE_NAMES_PREFIX: "supertokens_"
 
 networks:
   user_api_network:
