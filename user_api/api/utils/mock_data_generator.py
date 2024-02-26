@@ -17,11 +17,13 @@ def create_demo_data():
         caretaker = User(
             name="Caretaker Amy",
             role=UserRole.CARETAKER,
+            id="SAMPLE_CARETAKER"
         )
 
         patient1 = User(
             name="Bob Whitaker",
             role=UserRole.PATIENT,
+            id="SAMPLE_PATIENT"
         )
 
         patient2 = User(
