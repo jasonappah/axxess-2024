@@ -1,5 +1,4 @@
-from typing import Annotated
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, status
 from sqlmodel import Session
 
 from api.database import get_session
@@ -18,30 +17,12 @@ logger = logger_config(__name__)
 def get_user_due_for_dispense(user_id: str, db: Session = Depends(get_session)):
     return read_user_if_user_is_due_for_dispense(user_id=user_id, db=db)
 
-
-@router.get(
-    "/due_for_dispense",
-    # response_model=list[UserReadWithPrescriptions],
-    status_code=status.HTTP_200_OK,
-)
-def get_user_due_for_dispense_default(user_id: Annotated[str, Query(min_length=0)], db: Session = Depends(get_session)):
-    return read_user_if_user_is_due_for_dispense(user_id=user_id, db=db)
-
-
 @router.post(
     "/{pill_dispense_id}/consume",
     status_code=status.HTTP_200_OK,
 )
 def user_consumed_pill_dispense_event(pill_dispense_id: str, db: Session = Depends(get_session)):
     return mark_dispense_as_consumed(pill_dispense_id=pill_dispense_id, db=db)
-
-@router.get(
-    "/consume",
-    status_code=status.HTTP_200_OK,
-)
-def user_consumed_pill_dispense_event_default(pill_dispense_id: Annotated[str, Query(min_length=0)], db: Session = Depends(get_session)):
-    return mark_dispense_as_consumed(pill_dispense_id=pill_dispense_id, db=db)
-
 
 @router.get(
     "/patients",
